@@ -99,66 +99,76 @@
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
  <body class="h-full m-0" style="background: linear-gradient(135deg, #0a0e27 0%, #16213e 50%, #0f3460 100%);">
-  <div id="app" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #0a0e27 0%, #1a2847 50%, #0f3460 100%);">
-   <!-- ADMIN PANEL BUTTON --> <button id="adminToggleBtn" style="position:fixed;top:24px;right:24px;width:52px;height:52px;padding:0;border-radius:12px;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);border:1px solid rgba(255,255,255,0.15);color:#ffffff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);z-index:999999;pointer-events:auto;box-shadow:0 10px 30px rgba(79,70,229,0.4), 0 4px 12px rgba(124,58,237,0.3);font-weight:900;opacity:1;visibility:visible;backdrop-filter:blur(8px);"> <i data-lucide="settings-2" style="width:24px;height:24px;"></i> <span style="position:absolute;top:-8px;right:-8px;width:20px;height:20px;background:linear-gradient(135deg,#ef4444,#dc2626);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:900;border:2px solid white;box-shadow:0 2px 8px rgba(239,68,68,0.5);">⚙️</span> </button> <!-- ADMIN PASSWORD MODAL -->
+  <div id="app" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #0a0e27 0%, #1a2847 50%, #0f3460 100%);"><!-- ADMIN PANEL BUTTON --> <button id="adminToggleBtn" style="position:fixed;top:24px;right:24px;width:52px;height:52px;padding:0;border-radius:12px;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);border:1px solid rgba(255,255,255,0.15);color:#ffffff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);z-index:999999;pointer-events:auto;box-shadow:0 10px 30px rgba(79,70,229,0.4), 0 4px 12px rgba(124,58,237,0.3);font-weight:900;opacity:1;visibility:visible;backdrop-filter:blur(8px);"> <i data-lucide="settings-2" style="width:24px;height:24px;"></i> <span style="position:absolute;top:-8px;right:-8px;width:20px;height:20px;background:linear-gradient(135deg,#ef4444,#dc2626);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:900;border:2px solid white;box-shadow:0 2px 8px rgba(239,68,68,0.5);">⚙️</span> </button> <!-- ADMIN PASSWORD MODAL -->
    <div id="adminPasswordModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-gradient-to-br from-slate-900 to-slate-950 rounded-3xl p-8 max-w-sm w-full border border-red-500/30 animate-pop" style="box-shadow: 0 20px 60px rgba(233,69,96,0.3);">
      <h2 class="text-2xl font-black mb-4" style="color:#ff8787;">🔐 Masukkan Kode Admin</h2>
      <p class="mb-4 text-sm" style="color:#cbd5e1;">Hanya admin yang memiliki kode bisa mengakses panel ini</p><input id="adminPasswordInput" type="password" placeholder="Masukkan kode akses" class="w-full px-4 py-3 rounded-lg bg-slate-800/60 border-2 text-white placeholder-slate-600 focus:outline-none mb-4" style="border-color:rgba(233,69,96,0.5);color:#e2e8f0;" onkeypress="if(event.key==='Enter') verifyAdminPassword();">
      <p id="passwordError" class="text-xs mb-3" style="color:#ff6b6b;display:none;">❌ Kode akses salah. Silakan coba lagi.</p>
-     <div class="flex gap-3"><button onclick="closePasswordModal()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);">Batal</button> <button onclick="verifyAdminPassword()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#e94560,#ff6b6b);box-shadow:0 8px 30px rgba(233,69,96,0.3);">Masuk</button>
+     <div class="flex gap-3">
+      <button onclick="closePasswordModal()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);">Batal</button> <button onclick="verifyAdminPassword()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#e94560,#ff6b6b);box-shadow:0 8px 30px rgba(233,69,96,0.3);">Masuk</button>
      </div>
     </div>
    </div><!-- REGISTRATION SCREEN -->
    <main id="registrationScreen" class="flex flex-col items-center justify-start h-full p-4 overflow-y-auto">
-    <div class="text-center animate-fade-slide max-w-2xl w-full py-6 flex flex-col items-center flex-shrink-0">
-     <div class="mb-6 flex justify-center flex-shrink-0">
-      <div style="width:100px;height:100px;background:linear-gradient(135deg,#f8f9fa,#ffffff);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 60px rgba(99,102,241,0.3);flex-shrink:0;"><img src="https://um.ac.id/wp-content/uploads/2019/03/Lambang-UM.png" alt="Logo UM" loading="lazy" style="width:90px;height:90px;object-fit:contain;" onerror="console.error('Image failed to load:', this.src); this.background='#e5e7eb'; this.alt='Logo UM tidak tersedia';">
+    <div class="text-center animate-fade-slide max-w-2xl w-full py-3 flex flex-col items-center flex-shrink-0">
+     <div class="mb-4 flex justify-center flex-shrink-0">
+      <div style="width:70px;height:70px;background:linear-gradient(135deg,#f8f9fa,#ffffff);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 60px rgba(99,102,241,0.3);flex-shrink:0;">
+       <img src="https://um.ac.id/wp-content/uploads/2019/03/Lambang-UM.png" alt="Logo UM" loading="lazy" style="width:60px;height:60px;object-fit:contain;" onerror="console.error('Image failed to load:', this.src); this.background='#e5e7eb'; this.alt='Logo UM tidak tersedia';">
       </div>
      </div>
-     <p class="text-sm mb-6" style="color:#94a3b8;">Silakan isi data diri Anda terlebih dahulu</p>
+     <p class="text-xs mb-4" style="color:#94a3b8;">Silakan isi data diri Anda terlebih dahulu</p>
     </div>
     <div class="w-full flex justify-center px-4 flex-1 overflow-y-auto min-w-0">
      <div class="bg-slate-800/40 backdrop-blur-md rounded-2xl p-6 border border-red-500/30 w-full max-w-4xl" style="position: relative; z-index: 10;">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-       <div class="text-left"><label class="block text-sm font-bold mb-2" style="color:#94a3b8;">Periode Akademik *</label> <select id="academicPeriod" required class="w-full px-4 py-3 rounded-lg bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Periode --</option> <option value="2025/2026">2025/2026</option> <option value="2026/2027">2026/2027</option> <option value="2027/2028">2027/2028</option> <option value="2028/2029">2028/2029</option> <option value="2029/2030">2029/2030</option> </select>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mb-3">
+       <div class="text-left">
+        <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Periode Akademik *</label> <select id="academicPeriod" required class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Periode --</option> <option value="2025/2026">2025/2026</option> <option value="2026/2027">2026/2027</option> <option value="2027/2028">2027/2028</option> <option value="2028/2029">2028/2029</option> <option value="2029/2030">2029/2030</option> </select>
        </div>
-       <div class="text-left"><label class="block text-sm font-bold mb-2" style="color:#94a3b8;">Semester *</label> <select id="semester" required class="w-full px-4 py-3 rounded-lg bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Semester --</option> <option value="Ganjil">Ganjil</option> <option value="Genap">Genap</option> <option value="Antara">Antara</option> </select>
+       <div class="text-left">
+        <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Semester *</label> <select id="semester" required class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Semester --</option> <option value="Ganjil">Ganjil</option> <option value="Genap">Genap</option> <option value="Antara">Antara</option> </select>
        </div>
-       <div class="text-left"><label class="block text-sm font-bold mb-2" style="color:#94a3b8;">Jenis Ujian *</label> <select id="examType" required class="w-full px-4 py-3 rounded-lg bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Jenis Ujian --</option> <option value="UTS">UTS</option> <option value="UAS">UAS</option> </select>
+       <div class="text-left">
+        <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Jenis Ujian *</label> <select id="examType" required class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Jenis Ujian --</option> <option value="UTS">UTS</option> <option value="UAS">UAS</option> </select>
        </div>
-       <div class="text-left"><label class="block text-sm font-bold mb-2" style="color:#94a3b8;">NIM *</label> <input id="nim" type="text" required placeholder="Masukkan NIM" class="w-full px-4 py-3 rounded-lg bg-slate-700/60 border-2 text-white placeholder-slate-500 focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;">
+       <div class="text-left">
+        <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">NIM *</label> <input id="nim" type="text" required placeholder="Masukkan NIM" class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white placeholder-slate-500 focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;">
        </div>
-       <div class="text-left"><label class="block text-sm font-bold mb-2" style="color:#94a3b8;">Kelas *</label> <input id="class" type="text" required placeholder="Contoh: A, B, C" class="w-full px-4 py-3 rounded-lg bg-slate-700/60 border-2 text-white placeholder-slate-500 focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;">
+       <div class="text-left">
+        <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Kelas *</label> <input id="class" type="text" required placeholder="Contoh: A, B, C" class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white placeholder-slate-500 focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;">
+       </div>
+       <div class="text-left">
+        <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Nama Mata Kuliah *</label> <select id="courseName" required class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Mata Kuliah --</option> </select>
        </div>
       </div>
-      <div class="text-left mb-4"><label class="block text-sm font-bold mb-2" style="color:#94a3b8;">Nama Mata Kuliah *</label> <select id="courseName" required class="w-full px-4 py-3 rounded-lg bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Mata Kuliah --</option> </select>
-      </div>
-      <div class="text-left mb-6"><label class="block text-sm font-bold mb-2" style="color:#94a3b8;">Email UM / Students *</label>
-       <div style="position:relative;"><input id="email" type="text" required placeholder="nama@um.ac.id atau nama@students.um.ac.id" class="w-full px-4 py-3 rounded-lg bg-slate-700/60 border-2 text-white placeholder-slate-500 focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;" autocomplete="off" onkeyup="filterEmailSuggestions()" onfocus="showEmailSuggestions()">
+      <div class="text-left mb-3">
+       <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Email UM / Students *</label>
+       <div style="position:relative;">
+        <input id="email" type="text" required placeholder="nama@um.ac.id atau nama@students.um.ac.id" class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white placeholder-slate-500 focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;" autocomplete="off" onkeyup="filterEmailSuggestions()" onfocus="showEmailSuggestions()">
         <div id="emailSuggestions" class="hidden absolute top-full left-0 right-0 mt-1 bg-slate-700 border-2 rounded-lg overflow-hidden z-10" style="border-color:rgba(100,116,139,0.5);max-height:150px;overflow-y:auto;"></div>
        </div>
        <p id="emailError" class="text-xs mt-1" style="color:#ef4444;display:none;">Email harus menggunakan domain @um.ac.id atau @students.um.ac.id</p>
-      </div><button type="button" onclick="submitRegistration(event)" class="w-full py-3 px-6 rounded-lg font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 8px 30px rgba(99,102,241,0.4);border:none;cursor:pointer;font-size:16px;">Mulai</button>
+      </div><button type="button" onclick="submitRegistration(event)" class="w-full py-2 px-4 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 8px 30px rgba(99,102,241,0.4);border:none;cursor:pointer;">Mulai</button>
      </div>
     </div>
-    <p class="mt-4 text-xs flex-shrink-0 text-center" style="color:#64748b;">Gunakan email institusional Anda (@um.ac.id atau @students.um.ac.id)</p>
+    <p class="mt-2 text-xs flex-shrink-0 text-center" style="color:#64748b;">Gunakan email institusional Anda (@um.ac.id atau @students.um.ac.id)</p>
    </main><!-- START SCREEN -->
    <main id="startScreen" class="hidden flex items-center justify-center h-full p-4">
     <div class="text-center animate-fade-slide max-w-lg w-full">
      <div class="mb-6 flex justify-center">
-      <div style="width:120px;height:120px;background:linear-gradient(135deg,#f8f9fa,#ffffff);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 60px rgba(99,102,241,0.3);"><img src="https://um.ac.id/wp-content/uploads/2019/03/Lambang-UM.png" alt="Logo UM" loading="lazy" style="width:110px;height:110px;object-fit:contain;" onerror="console.error('Image failed to load:', this.src); this.background='#e5e7eb'; this.alt='Logo UM tidak tersedia';">
+      <div style="width:120px;height:120px;background:linear-gradient(135deg,#f8f9fa,#ffffff);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 60px rgba(99,102,241,0.3);">
+       <img src="https://um.ac.id/wp-content/uploads/2019/03/Lambang-UM.png" alt="Logo UM" loading="lazy" style="width:110px;height:110px;object-fit:contain;" onerror="console.error('Image failed to load:', this.src); this.background='#e5e7eb'; this.alt='Logo UM tidak tersedia';">
       </div>
      </div>
      <p id="startScreenSubtitle" class="text-lg mb-8" style="color:#94a3b8;"></p>
-     <div class="flex gap-3 mb-6 justify-center"><button onclick="backToRegistration()" class="px-6 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);">← Kembali</button> <button id="startBtn" onclick="startQuiz()" class="px-10 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 8px 30px rgba(99,102,241,0.4);">Lanjut</button>
+     <div class="flex gap-3 mb-6 justify-center">
+      <button onclick="backToRegistration()" class="px-6 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);">← Kembali</button> <button id="startBtn" onclick="startQuiz()" class="px-10 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 8px 30px rgba(99,102,241,0.4);">Lanjut</button>
      </div>
      <p id="startScreenMeta" class="mt-4 text-sm" style="color:#64748b;"></p>
     </div>
    </main><!-- QUIZ SCREEN -->
    <div id="quizScreen" class="hidden h-full flex flex-col overflow-hidden">
-    <div class="flex-1 flex flex-col overflow-hidden min-w-0 p-4">
-     <!-- Exam Info Header -->
+    <div class="flex-1 flex flex-col overflow-hidden min-w-0 p-4"><!-- Exam Info Header -->
      <div class="mb-3 p-3 rounded-lg" style="background:rgba(99,102,241,0.1);border:2px solid rgba(99,102,241,0.3);backdrop-filter:blur(8px);">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
        <div>
@@ -196,7 +206,8 @@
       </div>
      </div><!-- Progress & Header -->
      <header class="mb-2">
-      <div class="flex justify-between items-center mb-2"><span id="questionCounter" class="font-bold text-xs" style="color:#94a3b8;">Soal 1 / 5</span> <button onclick="exitToEditIdentity()" class="px-2 py-1 rounded text-xs font-bold text-white transition-all hover:scale-105 active:scale-95" style="background:rgba(255,152,0,0.3);border:1px solid rgba(255,152,0,0.5);color:#ffa500;cursor:pointer;">⬅️ Edit Identitas</button>
+      <div class="flex justify-between items-center mb-2">
+       <span id="questionCounter" class="font-bold text-xs" style="color:#94a3b8;">Soal 1 / 5</span> <button onclick="exitToEditIdentity()" class="px-2 py-1 rounded text-xs font-bold text-white transition-all hover:scale-105 active:scale-95" style="background:rgba(255,152,0,0.3);border:1px solid rgba(255,152,0,0.5);color:#ffa500;cursor:pointer;">⬅️ Edit Identitas</button>
       </div>
       <div class="w-full h-1.5 rounded-full" style="background:#1e293b;">
        <div id="progressBar" class="progress-fill h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#6366f1,#8b5cf6);"></div>
@@ -205,8 +216,7 @@
      <div class="flex-1 overflow-y-auto mb-3 min-h-0">
       <div id="questionArea" class="animate-fade-slide max-w-4xl mx-auto w-full"></div>
      </div><!-- Navigation & Submit Buttons -->
-     <div class="flex gap-2">
-      <button id="prevBtn" onclick="goToPreviousQuestion()" class="px-4 py-2 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);cursor:pointer;display:flex;align-items:center;gap:6px;"><i data-lucide="chevron-left" style="width:18px;height:18px;"></i> <span>Sebelumnya</span></button> <button id="submitBtn" onclick="openSubmitConfirm()" class="flex-1 px-4 py-2 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 8px 30px rgba(34,197,94,0.3);">💾 Kirim Semua Jawaban</button> <button id="nextBtn" onclick="goToNextQuestion()" class="px-4 py-2 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(99,102,241,0.3);border:1px solid rgba(99,102,241,0.5);cursor:pointer;display:flex;align-items:center;gap:6px;"><span>Selanjutnya</span> <i data-lucide="chevron-right" style="width:18px;height:18px;"></i></button>
+     <div class="flex gap-2"><button id="prevBtn" onclick="goToPreviousQuestion()" class="px-4 py-2 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);cursor:pointer;display:flex;align-items:center;gap:6px;"><i data-lucide="chevron-left" style="width:18px;height:18px;"></i> <span>Sebelumnya</span></button> <button id="submitBtn" onclick="openSubmitConfirm()" class="flex-1 px-4 py-2 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 8px 30px rgba(34,197,94,0.3);">💾 Kirim Semua Jawaban</button> <button id="nextBtn" onclick="goToNextQuestion()" class="px-4 py-2 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(99,102,241,0.3);border:1px solid rgba(99,102,241,0.5);cursor:pointer;display:flex;align-items:center;gap:6px;"><span>Selanjutnya</span> <i data-lucide="chevron-right" style="width:18px;height:18px;"></i></button>
      </div>
     </div>
    </div><!-- SUBMIT CONFIRMATION MODAL -->
@@ -214,7 +224,8 @@
     <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 max-w-sm w-full animate-pop border border-purple-500/30" style="box-shadow: 0 20px 60px rgba(99,102,241,0.3);">
      <h3 class="text-2xl font-black mb-3" style="color:#e2e8f0;">Konfirmasi Pengiriman</h3>
      <p class="mb-6 text-base" style="color:#94a3b8;">Apakah Anda yakin ingin mengirim semua jawaban? Data ini akan disimpan secara permanen dan tidak bisa diubah lagi.</p>
-     <div class="flex gap-3"><button onclick="closeSubmitConfirm()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);">Tidak</button> <button onclick="confirmSubmit()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 8px 30px rgba(34,197,94,0.3);">Ya, Kirim</button>
+     <div class="flex gap-3">
+      <button onclick="closeSubmitConfirm()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);">Tidak</button> <button onclick="confirmSubmit()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 8px 30px rgba(34,197,94,0.3);">Ya, Kirim</button>
      </div>
     </div>
    </div><!-- RESULT SCREEN -->
@@ -223,7 +234,8 @@
      <div id="confettiContainer" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
      <div id="resultEmoji" class="text-7xl mb-4"></div>
      <p id="resultMessage" class="text-lg mb-8" style="color:#94a3b8;"></p>
-     <div class="flex gap-3 justify-center"><button onclick="handleRetakeAttempt()" class="px-8 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 8px 30px rgba(99,102,241,0.3);border:none;cursor:pointer;">📝 Kerjakan Ujian Lain</button>
+     <div class="flex gap-3 justify-center">
+      <button onclick="handleRetakeAttempt()" class="px-8 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 8px 30px rgba(99,102,241,0.3);border:none;cursor:pointer;">📝 Kerjakan Ujian Lain</button>
      </div>
     </div>
    </div>
@@ -4077,5 +4089,5 @@ function ContentServiceResult(message, success, data) {
       loadAdminData();
     }
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9dff69733173b5b1',t:'MTc3NDEyMTg1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9dff726423b6b5b1',t:'MTc3NDEyMjIyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
