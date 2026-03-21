@@ -556,6 +556,7 @@
                   
                   <div style="display:flex;gap:8px;flex-shrink:0;">
                     <button onclick="editQuestion('${q.question_id}')" class="px-3 py-2 rounded font-bold text-xs flex-shrink-0 transition-all" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.5);color:#6366f1;cursor:pointer;white-space:nowrap;" onmouseover="this.style.background='rgba(99,102,241,0.4)'" onmouseout="this.style.background='rgba(99,102,241,0.2)'">✏️ Edit</button>
+                    <button onclick="duplicateQuestion('${q.question_id}')" class="px-3 py-2 rounded font-bold text-xs flex-shrink-0 transition-all" style="background:rgba(168,85,247,0.2);border:1px solid rgba(168,85,247,0.5);color:#d8b4fe;cursor:pointer;white-space:nowrap;" onmouseover="this.style.background='rgba(168,85,247,0.4)'" onmouseout="this.style.background='rgba(168,85,247,0.2)'">📋 Duplikat</button>
                     <button onclick="deleteQuestion('${q.question_id}')" class="px-3 py-2 rounded font-bold text-xs flex-shrink-0 transition-all" style="background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.5);color:#ef4444;cursor:pointer;white-space:nowrap;" onmouseover="this.style.background='rgba(239,68,68,0.4)'" onmouseout="this.style.background='rgba(239,68,68,0.2)'">🗑️ Hapus</button>
                   </div>
                 </div>
@@ -2847,6 +2848,347 @@ function ContentServiceResult(message, success, data) {
       console.log('✅ All quiz data cleared - ready for new exam');
     }
 
+    // 🔒 AUTO-LOCK FUNCTIONS
+    function lockExamDueToMinimize() {
+      console.log('🚫 LOCKING EXAM due to minimize/tab switch');
+      
+      // Store lock info
+      const lockKey = `EXAM_LOCKED_${studentData.nim}_${studentData.academic_period}_${studentData.semester}_${studentData.exam_type}_${studentData.course_name}`;
+      localStorage.setItem(lockKey, 'LOCKED');
+      
+      // Hide quiz screen
+      document.getElementById('quizScreen').classList.add('hidden');
+      
+      // Show lock modal
+      showExamLockedModal();
+    }
+
+    function showExamLockedModal() {
+      const modal = document.createElement('div');
+      modal.id = 'examLockedModal';
+      modal.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.98);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999999;
+        backdrop-filter: blur(16px);
+        padding: 20px;
+        overflow-y: auto;
+      `;
+      
+      modal.innerHTML = `
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 max-w-2xl w-full border-2 my-4 animate-pop" style="border-color:rgba(239,68,68,0.8);box-shadow: 0 20px 100px rgba(239,68,68,0.6);">
+          <!-- HEADER -->
+          <div style="text-align:center;margin-bottom:32px;">
+            <div style="font-size:100px;margin-bottom:20px;animation: bounce 0.8s ease-in-out;">🔒</div>
+            <h2 class="text-4xl font-black" style="color:#ff6b6b;margin-bottom:12px;">Ujian Terkunci!</h2>
+            <p style="color:#cbd5e1;font-size:15px;line-height:1.6;">Anda telah mencoba pindah tab atau minimize layar saat ujian sedang berlangsung. Untuk alasan keamanan, ujian Anda telah ditutup otomatis.</p>
+          </div>
+
+          <!-- VIOLATION INFO -->
+          <div class="p-6 rounded-xl mb-6" style="background:linear-gradient(135deg, rgba(239,68,68,0.15), rgba(249,115,22,0.1));border:2px solid rgba(239,68,68,0.4);">
+            <p style="color:#ff8787;font-weight:bold;font-size:14px;margin-bottom:12px;">⚠️ Deteksi Pelanggaran Keamanan:</p>
+            <ul style="color:#cbd5e1;font-size:13px;line-height:2;margin:0;padding-left:24px;">
+              <li>❌ Meminimalkan / mengecilkan layar ujian</li>
+              <li>❌ Pindah ke tab browser lain</li>
+              <li>❌ Membuka aplikasi lain</li>
+            </ul>
+          </div>
+
+          <!-- WHAT TO DO -->
+          <div class="p-6 rounded-xl mb-6" style="background:linear-gradient(135deg, rgba(168,85,247,0.12), rgba(168,85,247,0.05));border:2px solid rgba(168,85,247,0.3);">
+            <p style="color:#d8b4fe;font-weight:bold;font-size:14px;margin-bottom:12px;">📋 Apa yang Harus Anda Lakukan?</p>
+            <ol style="color:#cbd5e1;font-size:13px;line-height:2;margin:0;padding-left:24px;">
+              <li>✅ Hubungi admin untuk melaporkan ini</li>
+              <li>✅ Jelaskan bahwa Anda tidak sengaja minimize/pindah tab</li>
+              <li>✅ Admin akan memberikan izin untuk mengerjakan ulang (retake)</li>
+              <li>✅ Kerjakan ujian lagi dengan fokus penuh</li>
+            </ol>
+          </div>
+
+          <!-- STUDENT DATA -->
+          <div class="p-4 rounded-lg mb-6" style="background:rgba(30,41,59,0.8);border:1px solid rgba(100,116,139,0.3);">
+            <p style="color:#94a3b8;font-size:11px;font-weight:bold;text-transform:uppercase;margin-bottom:10px;">📝 Data Siswa</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <p style="color:#cbd5e1;font-size:11px;margin:0 0 2px 0;">NIM:</p>
+                <p style="color:#e2e8f0;font-size:12px;font-weight:bold;font-family:monospace;margin:0;">${studentData.nim}</p>
+              </div>
+              <div>
+                <p style="color:#cbd5e1;font-size:11px;margin:0 0 2px 0;">Email:</p>
+                <p style="color:#e2e8f0;font-size:12px;font-weight:bold;font-family:monospace;word-break:break-all;margin:0;">${studentData.email}</p>
+              </div>
+              <div>
+                <p style="color:#cbd5e1;font-size:11px;margin:0 0 2px 0;">Mata Kuliah:</p>
+                <p style="color:#e2e8f0;font-size:12px;font-weight:bold;margin:0;">${studentData.course_name}</p>
+              </div>
+              <div>
+                <p style="color:#cbd5e1;font-size:11px;margin:0 0 2px 0;">Periode:</p>
+                <p style="color:#e2e8f0;font-size:12px;font-weight:bold;margin:0;">${studentData.academic_period}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- BUTTONS -->
+          <div class="flex gap-3 flex-col">
+            <button onclick="requestRetakeAfterLock()" class="w-full py-4 rounded-xl font-bold text-white text-base transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,rgba(168,85,247,0.5),rgba(168,85,247,0.3));border:2px solid rgba(168,85,247,0.6);color:#d8b4fe;cursor:pointer;">📧 Minta Izin Retake ke Admin</button>
+            
+            <button onclick="backToRegistrationFromLock()" class="w-full py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);cursor:pointer;">← Kembali ke Beranda</button>
+          </div>
+
+          <!-- INFO FOOTER -->
+          <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(100,116,139,0.3);text-align:center;">
+            <p style="color:#64748b;font-size:11px;margin:0;">🔐 Sistem Keamanan Ujian • Waktu Penguncian: ${new Date().toLocaleString('id-ID')}</p>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+    }
+
+    function requestRetakeAfterLock() {
+      const nimNorm = (studentData.nim || '').trim();
+      const periodeNorm = (studentData.academic_period || '').trim();
+      const semesterNorm = (studentData.semester || '').trim();
+      const jenisNorm = (studentData.exam_type || '').trim();
+      const matakuliahNorm = (studentData.course_name || '').toLowerCase().trim();
+      const kelasNorm = (studentData.class || '').toLowerCase().trim();
+      const emailNorm = (studentData.email || '').toLowerCase().trim();
+      
+      const requestId = `${nimNorm}_${periodeNorm}_${semesterNorm}_${jenisNorm}_${matakuliahNorm}_${kelasNorm}_${emailNorm}_${Date.now()}`;
+      
+      const approvalRequest = {
+        request_id: requestId,
+        nim: nimNorm,
+        periode: periodeNorm,
+        semester: semesterNorm,
+        jenis: jenisNorm,
+        matakuliah: matakuliahNorm,
+        kelas: kelasNorm,
+        email: emailNorm,
+        request_time: new Date().toISOString(),
+        status: 'PENDING',
+        reason: 'EXAM_LOCKED_DUE_TO_MINIMIZE'
+      };
+
+      let existingRequests = [];
+      try {
+        const stored = localStorage.getItem('RETAKE_APPROVAL_REQUESTS');
+        if (stored) existingRequests = JSON.parse(stored);
+      } catch (err) {
+        console.error('Error loading requests:', err);
+      }
+
+      existingRequests.push(approvalRequest);
+      localStorage.setItem('RETAKE_APPROVAL_REQUESTS', JSON.stringify(existingRequests));
+
+      console.log('📧 Retake request after lock sent to admin:', approvalRequest);
+
+      const modal = document.getElementById('examLockedModal');
+      if (modal) modal.remove();
+
+      showNotification('📧 Permintaan retake telah dikirim ke admin! Silakan tunggu persetujuan.', 'success');
+      backToRegistrationFromLock();
+    }
+
+    function backToRegistrationFromLock() {
+      const modal = document.getElementById('examLockedModal');
+      if (modal) modal.remove();
+      
+      document.getElementById('quizScreen').classList.add('hidden');
+      document.getElementById('registrationScreen').classList.remove('hidden');
+      
+      // Clear form
+      document.getElementById('academicPeriod').value = '';
+      document.getElementById('semester').value = '';
+      document.getElementById('examType').value = '';
+      document.getElementById('nim').value = '';
+      document.getElementById('class').value = '';
+      document.getElementById('courseName').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('emailError').style.display = 'none';
+      
+      // Reset ALL quiz data
+      quizData = [];
+      currentQuestion = 0;
+      score = 0;
+      studentAnswers = {};
+      questionStatus = {};
+      answered = false;
+      studentData = {};
+      
+      console.log('✅ Reset complete after lock');
+    }
+
+    // ===============================
+    // SCREEN PROTECTION SYSTEM
+    // ===============================
+    function activateQuizScreenProtection() {
+      console.log('🔒 Activating quiz screen protection...');
+      
+      // 1️⃣ Disable right-click (screenshot/inspect)
+      document.addEventListener('contextmenu', (e) => {
+        const quizScreen = document.getElementById('quizScreen');
+        if (quizScreen && quizScreen.classList.contains('hidden') === false) {
+          e.preventDefault();
+          showNotification('🚫 Right-click dinonaktifkan selama ujian', 'error');
+          return false;
+        }
+      }, true);
+
+      // 2️⃣ Disable keyboard shortcuts (Ctrl+C, Ctrl+X, Print Screen, etc)
+      document.addEventListener('keydown', (e) => {
+        const quizScreen = document.getElementById('quizScreen');
+        const isQuizActive = quizScreen && quizScreen.classList.contains('hidden') === false;
+        
+        if (!isQuizActive) return;
+
+        // Disable: Ctrl+C, Ctrl+X, Ctrl+V, Ctrl+A
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'x' || e.key === 'v' || e.key === 'a')) {
+          e.preventDefault();
+          console.warn('⚠️ Copy/Cut/Paste/Select All blocked during quiz');
+          return false;
+        }
+
+        // Disable: Print Screen, Fn+Shift (Screenshot)
+        if (e.key === 'PrintScreen' || (e.shiftKey && e.key === 'F12')) {
+          e.preventDefault();
+          console.warn('⚠️ Screenshot blocked');
+          return false;
+        }
+
+        // Disable: F12 (Developer Tools)
+        if (e.key === 'F12') {
+          e.preventDefault();
+          showNotification('🚫 Developer Tools dinonaktifkan selama ujian', 'error');
+          console.warn('⚠️ F12 blocked');
+          return false;
+        }
+
+        // Disable: Ctrl+Shift+I (Inspect)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'i') {
+          e.preventDefault();
+          showNotification('🚫 Inspect Element dinonaktifkan selama ujian', 'error');
+          console.warn('⚠️ Inspect blocked');
+          return false;
+        }
+
+        // Disable: Ctrl+Shift+J (Console)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'j') {
+          e.preventDefault();
+          showNotification('🚫 Console dinonaktifkan selama ujian', 'error');
+          console.warn('⚠️ Console blocked');
+          return false;
+        }
+
+        // Disable: Ctrl+Shift+K (Network)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'k') {
+          e.preventDefault();
+          console.warn('⚠️ Network tools blocked');
+          return false;
+        }
+
+        // Disable: Ctrl+S (Save)
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+          e.preventDefault();
+          console.warn('⚠️ Save blocked');
+          return false;
+        }
+      }, true);
+
+      // 3️⃣ Disable text selection & drag (prevent screenshot via selection)
+      document.addEventListener('selectstart', (e) => {
+        const quizScreen = document.getElementById('quizScreen');
+        if (quizScreen && quizScreen.classList.contains('hidden') === false) {
+          e.preventDefault();
+          return false;
+        }
+      }, true);
+
+      document.addEventListener('dragstart', (e) => {
+        const quizScreen = document.getElementById('quizScreen');
+        if (quizScreen && quizScreen.classList.contains('hidden') === false) {
+          e.preventDefault();
+          return false;
+        }
+      }, true);
+
+      // 4️⃣ Detect visibility change (user switched tab/minimized)
+      document.addEventListener('visibilitychange', () => {
+        const quizScreen = document.getElementById('quizScreen');
+        if (quizScreen && quizScreen.classList.contains('hidden') === false) {
+          if (document.hidden) {
+            console.warn('⚠️ User switched tab/minimized quiz - AUTO LOCKING EXAM');
+            
+            // Auto-lock: Close exam immediately
+            lockExamDueToMinimize();
+            
+          } else {
+            console.log('✅ User kembali - tapi ujian sudah terkunci');
+          }
+        }
+      });
+
+      // 5️⃣ Detect keyboard + Alt (Alt+Tab, Alt+F4)
+      document.addEventListener('keydown', (e) => {
+        const quizScreen = document.getElementById('quizScreen');
+        const isQuizActive = quizScreen && quizScreen.classList.contains('hidden') === false;
+        
+        if (!isQuizActive) return;
+
+        if (e.altKey && (e.key === 'Tab' || e.key === 'F4')) {
+          e.preventDefault();
+          console.warn('⚠️ Alt+Tab / Alt+F4 blocked');
+          showNotification('🚫 Tab switching dinonaktifkan selama ujian', 'error');
+          return false;
+        }
+      }, true);
+
+      // 6️⃣ Disable copy via mouse (triple-click or drag select)
+      document.addEventListener('copy', (e) => {
+        const quizScreen = document.getElementById('quizScreen');
+        if (quizScreen && quizScreen.classList.contains('hidden') === false) {
+          e.preventDefault();
+          console.warn('⚠️ Copy blocked');
+          return false;
+        }
+      }, true);
+
+      document.addEventListener('cut', (e) => {
+        const quizScreen = document.getElementById('quizScreen');
+        if (quizScreen && quizScreen.classList.contains('hidden') === false) {
+          e.preventDefault();
+          console.warn('⚠️ Cut blocked');
+          return false;
+        }
+      }, true);
+
+      document.addEventListener('paste', (e) => {
+        const quizScreen = document.getElementById('quizScreen');
+        if (quizScreen && quizScreen.classList.contains('hidden') === false) {
+          e.preventDefault();
+          console.warn('⚠️ Paste blocked');
+          return false;
+        }
+      }, true);
+
+      // 7️⃣ Disable console access (prevent cheating via console)
+      window.console.log = function() {};
+      window.console.warn = function() {};
+      window.console.error = function() {};
+      window.console.debug = function() {};
+
+      console.log('✅ Quiz screen protection activated');
+    }
+
+    function deactivateQuizScreenProtection() {
+      console.log('🔓 Deactivating quiz screen protection...');
+      // Protection automatically removes when quiz screen is hidden
+    }
+
     // Initialize local storage only
     (async () => {
       console.log('🔄 Initializing local storage (no Data SDK)...');
@@ -2866,6 +3208,9 @@ function ContentServiceResult(message, success, data) {
       }
       
       updateCourseDatalist();
+      
+      // Activate protection when DOM is ready
+      activateQuizScreenProtection();
       console.log('✅ Local storage initialized');
     })();
 
@@ -3338,6 +3683,37 @@ function ContentServiceResult(message, success, data) {
       loadAdminData();
     }
 
+    function duplicateQuestion(qid) {
+      const originalQuestion = allQuestionsMap.get(qid);
+      if (!originalQuestion) {
+        showNotification('❌ Soal tidak ditemukan', 'error');
+        return;
+      }
+
+      // Cari nomor soal baru yang tidak terpakai
+      let newQid = parseInt(qid) + 1;
+      while (allQuestionsMap.has(String(newQid))) {
+        newQid++;
+      }
+
+      // Buat copy dari soal original
+      const duplicatedQuestion = JSON.parse(JSON.stringify(originalQuestion));
+      duplicatedQuestion.question_id = String(newQid);
+
+      // Simpan ke map
+      allQuestionsMap.set(String(newQid), duplicatedQuestion);
+      
+      const questionsArray = Array.from(allQuestionsMap.values());
+      localStorage.setItem('QUIZ_QUESTIONS', JSON.stringify(questionsArray));
+
+      showNotification(`✅ Soal berhasil diduplikasi sebagai soal nomor ${newQid}!`, 'success');
+      updateCourseDatalist();
+      
+      setTimeout(() => {
+        loadAdminData();
+      }, 500);
+    }
+
     function exportQuestionsToCSV() {
       const questions = Array.from(allQuestionsMap.values()).sort((a, b) => {
         return parseInt(a.question_id) - parseInt(b.question_id);
@@ -3699,5 +4075,5 @@ function ContentServiceResult(message, success, data) {
       loadAdminData();
     }
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9dff3b9b7451e78d',t:'MTc3NDExOTk3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9dff581ac4a9e78b',t:'MTc3NDEyMTE0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
