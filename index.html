@@ -2855,13 +2855,6 @@ function ContentServiceResult(message, success, data) {
       
       console.log(`\n📊 Total answers: ${answeredCount}/${quizData.length}`);
       
-      async function confirmSubmit() {
-  closeSubmitConfirm();
-
-  const submitBtn = document.getElementById("submitBtn");
-  submitBtn.disabled = true;
-  submitBtn.textContent = "⏳ Mengirim...";
-
   // =========================
   // 🔹 DATA IDENTITAS
   // =========================
@@ -3030,75 +3023,7 @@ function ContentServiceResult(message, success, data) {
       console.log(`  - Submitted at: ${new Date().toLocaleString('id-ID')}`);
     }
 
-    async function kirimKeSheet(payload) {
-      try {
-        console.log('📤 Sending to Google Sheet via Apps Script...');
-        console.log('   URL: https://script.google.com/macros/s/AKfycbyii9-n9JUWvlRZn6LXIb16gH2wzNuaNocoa3RrlrsUEW4YcT7HkBRH7XBW0xGEgrM/exec');
-        console.log('   Payload:', JSON.stringify(payload, null, 2));
-        
-        // Simpan juga ke localStorage sebagai backup
-        const backupKey = `SUBMISSION_${payload.data[4]}_${payload.data[0]}_${payload.data[1]}_${payload.data[2]}_${new Date().getTime()}`;
-        localStorage.setItem(backupKey, JSON.stringify(payload));
-        console.log('💾 Backup disimpan ke localStorage dengan key:', backupKey);
-        
-        const response = await fetch("https://script.google.com/macros/s/AKfycbyii9-n9JUWvlRZn6LXIb16gH2wzNuaNocoa3RrlrsUEW4YcT7HkBRH7XBW0xGEgrM/exec", {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(payload)
-        });
-
-        console.log("✅ Request dikirim ke Google Sheet (no-cors mode - response tidak terlihat)");
-        console.log("💾 Jawaban disimpan ke sheet JAWABAN dan localStorage");
-        return true;
-
-      } catch (error) {
-        console.error("❌ Gagal kirim ke Google Sheet:", error);
-        return false;
-      }
-    }
-
-    async function sendAnswerToGoogleSheetDirect(answerRecord) {
-      try {
-        const periode = String(studentData.academic_period || '').trim();
-        const semester = String(studentData.semester || '').trim();
-        const jenis = String(studentData.exam_type || '').trim();
-        const matakuliah = String(studentData.course_name || '').trim();
-        const nim = String(studentData.nim || '').trim();
-        const kelas = String(studentData.class || '').trim();
-        const email = String(studentData.email || '').trim();
-        const jawaban = String(answerRecord.jawaban || '').trim();
-        const kunci = String(answerRecord.kunci_jawaban || '').trim();
-        const timestamp = new Date().toISOString();
-
-        const rowData = [periode, semester, jenis, matakuliah, nim, kelas, email, jawaban, kunci, timestamp];
-        
-        const payload = {
-          sheetName: 'JAWABAN',
-          data: rowData
-        };
-        
-        // Try cloud sync first via Apps Script
-        const cloudSuccess = await sendAnswerToCloudViaAppsScript({
-          periode, semester, jenis, matakuliah, nim, kelas, email, 
-          jawaban, kunci_jawaban: kunci, timestamp
-        });
-
-        if (cloudSuccess) {
-          console.log('✅ Answer synced to cloud successfully');
-          return true;
-        }
-
-        // Fallback to local sheet submission if cloud fails
-        return await kirimKeSheet(payload);
-        
-      } catch (err) {
-        console.error('❌ Error sending to Google Sheet:', err);
-        return false;
-      }
-    }
+    
 
     function backToRegistration() {
       document.getElementById('startScreen').classList.add('hidden');
@@ -4500,23 +4425,31 @@ function ContentServiceResult(message, success, data) {
     }
 
     async function syncViaAppsScript(appsScriptUrl) {
-      try {
-        const response = await fetch(appsScriptUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'getQuestions', sheetName: 'SOAL' })
-        });
+  try {
+    const response = await fetch(appsScriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'getQuestions',
+        sheetName: 'SOAL'
+      })
+    });
 
-        console.log('✅ Apps Script request sent');
-        // mode: 'no-cors' tidak bisa membaca response, jadi fallback ke CSV
-        return await syncViaGoogleSheetCSV(localStorage.getItem('QUESTIONS_GOOGLE_SHEET_ID') || '');
-      } catch (err) {
-        console.error('⚠️ Apps Script sync error:', err);
-        return false;
-      }
-    }
+    const result = await response.json();
 
+    console.log('✅ Soal berhasil diambil dari Apps Script');
+    console.log(result);
+
+    return result;
+
+  } catch (err) {
+    console.error('⚠️ Apps Script gagal, fallback ke CSV:', err);
+
+    return await syncViaGoogleSheetCSV(
+      localStorage.getItem('QUESTIONS_GOOGLE_SHEET_ID') || ''
+    );
+  }
+}
     async function syncViaGoogleSheetCSV(questionSheetId) {
       try {
         if (!questionSheetId) {
