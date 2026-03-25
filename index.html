@@ -99,21 +99,22 @@
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
  <body class="h-full m-0" style="background: linear-gradient(135deg, #0a0e27 0%, #16213e 50%, #0f3460 100%);">
-  <div id="app" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #0a0e27 0%, #1a2847 50%, #0f3460 100%);">
-   <!-- ADMIN PANEL BUTTON --> <button id="adminToggleBtn" style="position:fixed;top:24px;right:24px;width:52px;height:52px;padding:0;border-radius:12px;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);border:1px solid rgba(255,255,255,0.15);color:#ffffff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);z-index:999999;pointer-events:auto;box-shadow:0 10px 30px rgba(79,70,229,0.4), 0 4px 12px rgba(124,58,237,0.3);font-weight:900;opacity:1;visibility:visible;backdrop-filter:blur(8px);"> <i data-lucide="settings-2" style="width:24px;height:24px;"></i> <span style="position:absolute;top:-8px;right:-8px;width:20px;height:20px;background:linear-gradient(135deg,#ef4444,#dc2626);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:900;border:2px solid white;box-shadow:0 2px 8px rgba(239,68,68,0.5);">⚙️</span> </button> <!-- ADMIN PASSWORD MODAL -->
+  <div id="app" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #0a0e27 0%, #1a2847 50%, #0f3460 100%);"><!-- ADMIN PANEL BUTTON (Hidden from students - opacity 0, visibility hidden) --> <button id="adminToggleBtn" style="position:fixed;top:24px;right:24px;width:52px;height:52px;padding:0;border-radius:12px;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);border:1px solid rgba(255,255,255,0.15);color:#ffffff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);z-index:999999;pointer-events:auto;box-shadow:0 10px 30px rgba(79,70,229,0.5), 0 4px 12px rgba(124,58,237,0.4);font-weight:900;backdrop-filter:blur(8px);"> <i data-lucide="settings-2" style="width:28px;height:28px;"></i> <span style="position:absolute;top:-8px;right:-8px;width:20px;height:20px;background:linear-gradient(135deg,#ef4444,#dc2626);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:900;border:2px solid white;box-shadow:0 2px 8px rgba(239,68,68,0.5);">⚙️</span> </button>
    <div id="adminPasswordModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-gradient-to-br from-slate-900 to-slate-950 rounded-3xl p-8 max-w-sm w-full border border-red-500/30 animate-pop" style="box-shadow: 0 20px 60px rgba(233,69,96,0.3);">
      <h2 class="text-2xl font-black mb-4" style="color:#ff8787;">🔐 Masukkan Kode Admin</h2>
      <p class="mb-4 text-sm" style="color:#cbd5e1;">Hanya admin yang memiliki kode bisa mengakses panel ini</p><input id="adminPasswordInput" type="password" placeholder="Masukkan kode akses" class="w-full px-4 py-3 rounded-lg bg-slate-800/60 border-2 text-white placeholder-slate-600 focus:outline-none mb-4" style="border-color:rgba(233,69,96,0.5);color:#e2e8f0;" onkeypress="if(event.key==='Enter') verifyAdminPassword();">
      <p id="passwordError" class="text-xs mb-3" style="color:#ff6b6b;display:none;">❌ Kode akses salah. Silakan coba lagi.</p>
-     <div class="flex gap-3"><button onclick="closePasswordModal()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);">Batal</button> <button onclick="verifyAdminPassword()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#e94560,#ff6b6b);box-shadow:0 8px 30px rgba(233,69,96,0.3);">Masuk</button>
+     <div class="flex gap-3">
+      <button onclick="closePasswordModal()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);">Batal</button> <button onclick="verifyAdminPassword()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#e94560,#ff6b6b);box-shadow:0 8px 30px rgba(233,69,96,0.3);">Masuk</button>
      </div>
     </div>
    </div><!-- REGISTRATION SCREEN -->
    <main id="registrationScreen" class="flex flex-col items-center justify-start h-full p-4 overflow-y-auto">
     <div class="text-center animate-fade-slide max-w-2xl w-full py-3 flex flex-col items-center flex-shrink-0">
      <div class="mb-4 flex justify-center flex-shrink-0">
-      <div style="width:60px;height:60px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 60px rgba(99,102,241,0.3);flex-shrink:0;"><img src="https://um.ac.id/wp-content/uploads/2019/03/Lambang-UM.png" alt="Logo UM" loading="lazy" style="width:52px;height:52px;object-fit:contain;" onerror="console.error('Image failed to load:', this.src); this.background='#e5e7eb'; this.alt='Logo UM tidak tersedia';">
+      <div style="width:60px;height:60px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 60px rgba(99,102,241,0.3);flex-shrink:0;">
+       <img src="https://um.ac.id/wp-content/uploads/2019/03/Lambang-UM.png" alt="Logo UM" loading="lazy" style="width:52px;height:52px;object-fit:contain;" onerror="console.error('Image failed to load:', this.src); this.background='#e5e7eb'; this.alt='Logo UM tidak tersedia';">
       </div>
      </div>
      <p class="text-xs mb-4" style="color:#94a3b8;">Silakan isi data diri Anda terlebih dahulu</p>
@@ -121,21 +122,29 @@
     <div class="w-full flex justify-center px-4 flex-1 overflow-y-auto min-w-0">
      <div class="bg-slate-800/40 backdrop-blur-md rounded-2xl p-6 border border-red-500/30 w-full max-w-4xl" style="position: relative; z-index: 10;">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mb-3">
-       <div class="text-left"><label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Periode Akademik *</label> <select id="academicPeriod" required class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Periode --</option> <option value="2025/2026">2025/2026</option> <option value="2026/2027">2026/2027</option> <option value="2027/2028">2027/2028</option> <option value="2028/2029">2028/2029</option> <option value="2029/2030">2029/2030</option> </select>
+       <div class="text-left">
+        <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Periode Akademik *</label> <select id="academicPeriod" required class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Periode --</option> <option value="2025/2026">2025/2026</option> <option value="2026/2027">2026/2027</option> <option value="2027/2028">2027/2028</option> <option value="2028/2029">2028/2029</option> <option value="2029/2030">2029/2030</option> </select>
        </div>
-       <div class="text-left"><label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Semester *</label> <select id="semester" required class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Semester --</option> <option value="Ganjil">Ganjil</option> <option value="Genap">Genap</option> <option value="Antara">Antara</option> </select>
+       <div class="text-left">
+        <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Semester *</label> <select id="semester" required class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Semester --</option> <option value="Ganjil">Ganjil</option> <option value="Genap">Genap</option> <option value="Antara">Antara</option> </select>
        </div>
-       <div class="text-left"><label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Jenis Ujian *</label> <select id="examType" required class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Jenis Ujian --</option> <option value="UTS">UTS</option> <option value="UAS">UAS</option> </select>
+       <div class="text-left">
+        <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Jenis Ujian *</label> <select id="examType" required class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Jenis Ujian --</option> <option value="UTS">UTS</option> <option value="UAS">UAS</option> </select>
        </div>
-       <div class="text-left"><label class="block text-xs font-bold mb-1" style="color:#94a3b8;">NIM *</label> <input id="nim" type="text" required placeholder="Masukkan NIM" class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white placeholder-slate-500 focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;">
+       <div class="text-left">
+        <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">NIM *</label> <input id="nim" type="text" required placeholder="Masukkan NIM" class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white placeholder-slate-500 focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;">
        </div>
-       <div class="text-left"><label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Kelas *</label> <input id="class" type="text" required placeholder="Contoh: A, B, C" class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white placeholder-slate-500 focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;">
+       <div class="text-left">
+        <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Kelas *</label> <input id="class" type="text" required placeholder="Contoh: A, B, C" class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white placeholder-slate-500 focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;">
        </div>
-       <div class="text-left"><label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Nama Mata Kuliah *</label> <select id="courseName" required class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Mata Kuliah --</option> </select>
+       <div class="text-left">
+        <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Nama Mata Kuliah *</label> <select id="courseName" required class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;"> <option value="">-- Pilih Mata Kuliah --</option> <option value="Pemrograman Mobile">Pemrograman Mobile</option> <option value="Algoritma dan Struktur Data">Algoritma dan Struktur Data</option> <option value="Sistem Operasi">Sistem Operasi</option> <option value="Jaringan Komputer">Jaringan Komputer</option> <option value="Keamanan Informasi">Keamanan Informasi</option> <option value="Artificial Intelligence">Artificial Intelligence</option> <option value="Cloud Computing">Cloud Computing</option> <option value="Pemrograman Desktop">Pemrograman Desktop</option> <option value="Web Development Advanced">Web Development Advanced</option> <option value="Machine Learning">Machine Learning</option> <option value="Data Science">Data Science</option> <option value="DevOps">DevOps</option> <option value="Software Testing">Software Testing</option> <option value="UI/UX Design">UI/UX Design</option> <option value="API Development">API Development</option> </select>
        </div>
       </div>
-      <div class="text-left mb-3"><label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Email UM / Students *</label>
-       <div style="position:relative;"><input id="email" type="text" required placeholder="nama@um.ac.id atau nama@students.um.ac.id" class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white placeholder-slate-500 focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;" autocomplete="off" onkeyup="filterEmailSuggestions()" onfocus="showEmailSuggestions()">
+      <div class="text-left mb-3">
+       <label class="block text-xs font-bold mb-1" style="color:#94a3b8;">Email UM / Students *</label>
+       <div style="position:relative;">
+        <input id="email" type="text" required placeholder="nama@um.ac.id atau nama@students.um.ac.id" class="w-full px-3 py-2 rounded text-sm bg-slate-700/60 border-2 text-white placeholder-slate-500 focus:outline-none transition-all" style="border-color:rgba(100,116,139,0.5);color:#e2e8f0;" autocomplete="off" onkeyup="filterEmailSuggestions()" onfocus="showEmailSuggestions()">
         <div id="emailSuggestions" class="hidden absolute top-full left-0 right-0 mt-1 bg-slate-700 border-2 rounded-lg overflow-hidden z-10" style="border-color:rgba(100,116,139,0.5);max-height:150px;overflow-y:auto;"></div>
        </div>
        <p id="emailError" class="text-xs mt-1" style="color:#ef4444;display:none;">Email harus menggunakan domain @um.ac.id atau @students.um.ac.id</p>
@@ -147,18 +156,19 @@
    <main id="startScreen" class="hidden flex items-center justify-center h-full p-4">
     <div class="text-center animate-fade-slide max-w-lg w-full">
      <div class="mb-6 flex justify-center">
-      <div style="width:120px;height:120px;background:linear-gradient(135deg,#f8f9fa,#ffffff);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 60px rgba(99,102,241,0.3);"><img src="https://um.ac.id/wp-content/uploads/2019/03/Lambang-UM.png" alt="Logo UM" loading="lazy" style="width:110px;height:110px;object-fit:contain;" onerror="console.error('Image failed to load:', this.src); this.background='#e5e7eb'; this.alt='Logo UM tidak tersedia';">
+      <div style="width:120px;height:120px;background:linear-gradient(135deg,#f8f9fa,#ffffff);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 60px rgba(99,102,241,0.3);">
+       <img src="https://um.ac.id/wp-content/uploads/2019/03/Lambang-UM.png" alt="Logo UM" loading="lazy" style="width:110px;height:110px;object-fit:contain;" onerror="console.error('Image failed to load:', this.src); this.background='#e5e7eb'; this.alt='Logo UM tidak tersedia';">
       </div>
      </div>
      <p id="startScreenSubtitle" class="text-lg mb-8" style="color:#94a3b8;"></p>
-     <div class="flex gap-3 mb-6 justify-center"><button onclick="backToRegistration()" class="px-6 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);">← Kembali</button> <button id="startBtn" onclick="startQuiz()" class="px-10 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 8px 30px rgba(99,102,241,0.4);">Lanjut</button>
+     <div class="flex gap-3 mb-6 justify-center">
+      <button onclick="backToRegistration()" class="px-6 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);">← Kembali</button> <button id="startBtn" onclick="startQuiz()" class="px-10 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 8px 30px rgba(99,102,241,0.4);">Lanjut</button>
      </div>
      <p id="startScreenMeta" class="mt-4 text-sm" style="color:#64748b;"></p>
     </div>
    </main><!-- QUIZ SCREEN -->
    <div id="quizScreen" class="hidden h-full flex flex-col overflow-hidden">
-    <div class="flex-1 flex flex-col overflow-hidden min-w-0 p-4">
-     <!-- Exam Info Header -->
+    <div class="flex-1 flex flex-col overflow-hidden min-w-0 p-4"><!-- Exam Info Header -->
      <div class="mb-3 p-3 rounded-lg" style="background:rgba(99,102,241,0.1);border:2px solid rgba(99,102,241,0.3);backdrop-filter:blur(8px);">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
        <div>
@@ -196,7 +206,8 @@
       </div>
      </div><!-- Progress & Header -->
      <header class="mb-2">
-      <div class="flex justify-between items-center mb-2"><span id="questionCounter" class="font-bold text-xs" style="color:#94a3b8;">Soal 1 / 5</span> <button onclick="exitToEditIdentity()" class="px-2 py-1 rounded text-xs font-bold text-white transition-all hover:scale-105 active:scale-95" style="background:rgba(255,152,0,0.3);border:1px solid rgba(255,152,0,0.5);color:#ffa500;cursor:pointer;">⬅️ Edit Identitas</button>
+      <div class="flex justify-between items-center mb-2">
+       <span id="questionCounter" class="font-bold text-xs" style="color:#94a3b8;">Soal 1 / 5</span> <button onclick="exitToEditIdentity()" class="px-2 py-1 rounded text-xs font-bold text-white transition-all hover:scale-105 active:scale-95" style="background:rgba(255,152,0,0.3);border:1px solid rgba(255,152,0,0.5);color:#ffa500;cursor:pointer;">⬅️ Edit Identitas</button>
       </div>
       <div class="w-full h-1.5 rounded-full" style="background:#1e293b;">
        <div id="progressBar" class="progress-fill h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#6366f1,#8b5cf6);"></div>
@@ -205,8 +216,7 @@
      <div class="flex-1 overflow-y-auto mb-3 min-h-0">
       <div id="questionArea" class="animate-fade-slide max-w-4xl mx-auto w-full"></div>
      </div><!-- Navigation & Submit Buttons -->
-     <div class="flex gap-2">
-      <button id="prevBtn" onclick="goToPreviousQuestion()" class="px-4 py-2 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);cursor:pointer;display:flex;align-items:center;gap:6px;"><i data-lucide="chevron-left" style="width:18px;height:18px;"></i> <span>Sebelumnya</span></button> <button id="submitBtn" onclick="openSubmitConfirm()" class="flex-1 px-4 py-2 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 8px 30px rgba(34,197,94,0.3);">💾 Kirim Semua Jawaban</button> <button id="nextBtn" onclick="goToNextQuestion()" class="px-4 py-2 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(99,102,241,0.3);border:1px solid rgba(99,102,241,0.5);cursor:pointer;display:flex;align-items:center;gap:6px;"><span>Selanjutnya</span> <i data-lucide="chevron-right" style="width:18px;height:18px;"></i></button>
+     <div class="flex gap-2"><button id="prevBtn" onclick="goToPreviousQuestion()" class="px-4 py-2 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);cursor:pointer;display:flex;align-items:center;gap:6px;"><i data-lucide="chevron-left" style="width:18px;height:18px;"></i> <span>Sebelumnya</span></button> <button id="submitBtn" onclick="openSubmitConfirm()" class="flex-1 px-4 py-2 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 8px 30px rgba(34,197,94,0.3);">💾 Kirim Semua Jawaban</button> <button id="nextBtn" onclick="goToNextQuestion()" class="px-4 py-2 rounded-lg font-bold text-sm text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(99,102,241,0.3);border:1px solid rgba(99,102,241,0.5);cursor:pointer;display:flex;align-items:center;gap:6px;"><span>Selanjutnya</span> <i data-lucide="chevron-right" style="width:18px;height:18px;"></i></button>
      </div>
     </div>
    </div><!-- SUBMIT CONFIRMATION MODAL -->
@@ -214,7 +224,8 @@
     <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 max-w-sm w-full animate-pop border border-purple-500/30" style="box-shadow: 0 20px 60px rgba(99,102,241,0.3);">
      <h3 class="text-2xl font-black mb-3" style="color:#e2e8f0;">Konfirmasi Pengiriman</h3>
      <p class="mb-6 text-base" style="color:#94a3b8;">Apakah Anda yakin ingin mengirim semua jawaban? Data ini akan disimpan secara permanen dan tidak bisa diubah lagi.</p>
-     <div class="flex gap-3"><button onclick="closeSubmitConfirm()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);">Tidak</button> <button onclick="confirmSubmit()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 8px 30px rgba(34,197,94,0.3);">Ya, Kirim</button>
+     <div class="flex gap-3">
+      <button onclick="closeSubmitConfirm()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:rgba(100,116,139,0.3);border:1px solid rgba(100,116,139,0.5);">Tidak</button> <button onclick="confirmSubmit()" class="flex-1 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 8px 30px rgba(34,197,94,0.3);">Ya, Kirim</button>
      </div>
     </div>
    </div><!-- RESULT SCREEN -->
@@ -223,7 +234,8 @@
      <div id="confettiContainer" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
      <div id="resultEmoji" class="text-7xl mb-4"></div>
      <p id="resultMessage" class="text-lg mb-8" style="color:#94a3b8;"></p>
-     <div class="flex gap-3 justify-center"><button onclick="handleRetakeAttempt()" class="px-8 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 8px 30px rgba(99,102,241,0.3);border:none;cursor:pointer;">📝 Kerjakan Ujian Lain</button>
+     <div class="flex gap-3 justify-center">
+      <button onclick="handleRetakeAttempt()" class="px-8 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 8px 30px rgba(99,102,241,0.3);border:none;cursor:pointer;">📝 Kerjakan Ujian Lain</button>
      </div>
     </div>
    </div>
@@ -313,6 +325,76 @@
       setTimeout(() => notification.remove(), 3000);
     }
 
+    function showAccessLockedBlocker() {
+      const blocker = document.createElement('div');
+      blocker.id = 'accessLockedBlocker';
+      blocker.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.95);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+        backdrop-filter: blur(12px);
+        padding: 20px;
+        overflow-y: auto;
+      `;
+      
+      blocker.innerHTML = `
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 max-w-2xl w-full border-2 my-4 animate-pop" style="border-color:rgba(239,68,68,0.6);box-shadow: 0 20px 80px rgba(239,68,68,0.5);">
+          <!-- HEADER -->
+          <div style="text-align:center;margin-bottom:28px;">
+            <div style="font-size:80px;margin-bottom:16px;">🔒</div>
+            <h2 class="text-3xl font-black" style="color:#ff8787;margin-bottom:8px;">Akses Ujian Ditutup</h2>
+            <p style="color:#cbd5e1;font-size:15px;">Saat ini ujian belum dibuka oleh admin. Silakan menunggu atau hubungi admin untuk informasi lebih lanjut.</p>
+          </div>
+
+          <!-- INFO BOX -->
+          <div class="p-6 rounded-xl mb-6 border-2" style="background:linear-gradient(135deg, rgba(239,68,68,0.08), rgba(249,115,22,0.08));border-color:rgba(239,68,68,0.4);">
+            <p style="color:#fbbf24;font-size:12px;font-weight:bold;text-transform:uppercase;margin-bottom:12px;">⏳ Status Platform:</p>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+              <span style="display:inline-block;width:40px;height:40px;border-radius:50%;background:rgba(239,68,68,0.3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🔒</span>
+              <div>
+                <p style="color:#ff8787;font-size:16px;font-weight:900;margin:0;">TERKUNCI</p>
+                <p style="color:#cbd5e1;font-size:12px;margin:4px 0 0 0;">Ujian tidak dapat diakses pada saat ini</p>
+              </div>
+            </div>
+            
+            <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;margin-top:12px;">
+              <p style="color:#cbd5e1;font-size:12px;line-height:1.8;margin:0;">
+                💡 <strong>Kemungkinan penyebab:</strong><br>
+                • Ujian belum dimulai<br>
+                • Admin sedang melakukan konfigurasi<br>
+                • Ujian sudah selesai
+              </p>
+            </div>
+          </div>
+
+          <!-- ACTION -->
+          <div class="flex gap-3 flex-col">
+            <button onclick="closeAccessLockedBlocker()" class="w-full py-4 rounded-xl font-bold text-white text-base transition-all hover:scale-[1.02] active:scale-95" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 8px 30px rgba(99,102,241,0.3);border:none;cursor:pointer;">← Kembali ke Beranda</button>
+          </div>
+
+          <!-- INFO FOOTER -->
+          <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(100,116,139,0.3);text-align:center;">
+            <p style="color:#64748b;font-size:11px;margin:0;">🔐 Platform Ujian • Hubungi admin jika ada pertanyaan</p>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(blocker);
+    }
+
+    function closeAccessLockedBlocker() {
+      const blocker = document.getElementById('accessLockedBlocker');
+      if (blocker) blocker.remove();
+      
+      // Kembali ke registration screen
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('registrationScreen').classList.remove('hidden');
+    }
+
     function copyAppsScriptCode() {
       const codeElement = document.getElementById('appsScriptCode');
       if (!codeElement) {
@@ -367,6 +449,7 @@
 
     const ADMIN_PASSWORD = 'Phyum-exam123*';
     let GOOGLE_SHEET_ID = localStorage.getItem('QUIZ_GOOGLE_SHEET_ID') || '';
+    let configData = {}; // For Data SDK storage
     
     function getGoogleSheetUrl() {
       return GOOGLE_SHEET_ID ? `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/edit` : '#';
@@ -375,7 +458,52 @@
     function setGoogleSheetId(sheetId) {
       GOOGLE_SHEET_ID = sheetId.trim();
       localStorage.setItem('QUIZ_GOOGLE_SHEET_ID', GOOGLE_SHEET_ID);
+      
+      // Also save to Data SDK for cloud persistence
+      saveConfigToCloud('sheet_id', GOOGLE_SHEET_ID);
+      
       console.log('✅ Google Sheet ID saved:', GOOGLE_SHEET_ID);
+    }
+    
+    async function saveConfigToCloud(key, value) {
+      try {
+        if (!window.dataSdk) {
+          console.log('⚠️ Data SDK not ready');
+          return;
+        }
+        
+        const record = {
+          config_key: key,
+          sheet_id: key === 'sheet_id' ? value : (configData.sheet_id || ''),
+          apps_script_url: key === 'apps_script_url' ? value : (configData.apps_script_url || ''),
+          import_apps_script_url: key === 'import_apps_script_url' ? value : (configData.import_apps_script_url || ''),
+          timestamp: new Date().toISOString()
+        };
+        
+        const result = await window.dataSdk.create(record);
+        if (result.isOk) {
+          console.log('✅ Config saved to cloud:', key, value);
+          configData = record;
+        } else {
+          console.error('❌ Failed to save config:', result.error);
+        }
+      } catch (err) {
+        console.error('❌ Error saving config to cloud:', err);
+      }
+    }
+    
+    async function loadConfigFromCloud() {
+      try {
+        if (!window.dataSdk) {
+          console.log('⚠️ Data SDK not ready');
+          return;
+        }
+        
+        // Data SDK automatically fetches all records via onDataChanged
+        console.log('📡 Config will be loaded via Data SDK onDataChanged');
+      } catch (err) {
+        console.error('❌ Error loading config from cloud:', err);
+      }
     }
     
     showAdminPanel = async function() {
@@ -438,6 +566,7 @@
               <button onclick="switchAdminTab('responses')" id="tab-responses" class="admin-tab-btn px-6 py-3 font-bold rounded-t-lg transition-all" style="background:transparent;color:#94a3b8;border-bottom:2px solid transparent;">📊 Lihat Jawaban</button>
               <button onclick="switchAdminTab('courses')" id="tab-courses" class="admin-tab-btn px-6 py-3 font-bold rounded-t-lg transition-all" style="background:transparent;color:#94a3b8;border-bottom:2px solid transparent;">🎓 Daftar Mata Kuliah</button>
               <button onclick="switchAdminTab('retakes')" id="tab-retakes" class="admin-tab-btn px-6 py-3 font-bold rounded-t-lg transition-all" style="background:transparent;color:#94a3b8;border-bottom:2px solid transparent;">🔄 Permintaan Retake</button>
+              <button onclick="switchAdminTab('access')" id="tab-access" class="admin-tab-btn px-6 py-3 font-bold rounded-t-lg transition-all" style="background:transparent;color:#94a3b8;border-bottom:2px solid transparent;">🔓 Kontrol Akses</button>
             </div>
 
             <!-- CONTENT AREAS -->
@@ -473,6 +602,81 @@
               <h2 class="text-xl font-bold mb-4" style="color:#e2e8f0;">🔄 Permintaan Retake Siswa</h2>
               <div id="retakesList" class="space-y-2 max-h-96 overflow-y-auto"></div>
             </div>
+
+            <!-- ACCESS CONTROL TAB -->
+            <div id="admin-access" class="admin-tab-content hidden">
+              <h2 class="text-xl font-bold mb-6" style="color:#e2e8f0;">🔓 Kontrol Akses Platform Ujian</h2>
+              
+              <!-- STATUS INDICATOR -->
+              <div id="accessStatusBox" class="p-6 rounded-xl mb-6 border-2" style="background:linear-gradient(135deg, rgba(239,68,68,0.1), rgba(249,115,22,0.08));border-color:rgba(239,68,68,0.4);">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+                  <div>
+                    <p style="color:#94a3b8;font-size:12px;font-weight:bold;text-transform:uppercase;margin-bottom:8px;">Status Akses Platform</p>
+                    <p id="accessStatusText" style="color:#ff8787;font-size:24px;font-weight:900;margin:0;">🔒 TERKUNCI</p>
+                    <p style="color:#cbd5e1;font-size:12px;margin-top:8px;">Siswa tidak dapat mengakses ujian</p>
+                  </div>
+                  <button onclick="togglePlatformAccess()" class="px-8 py-3 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-95" id="toggleAccessBtn" style="background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 8px 30px rgba(34,197,94,0.3);border:none;cursor:pointer;white-space:nowrap;font-size:15px;">🔓 Buka Akses</button>
+                </div>
+              </div>
+
+              <!-- INFORMASI -->
+              <div class="p-6 rounded-xl mb-6 border" style="background:rgba(30,41,59,0.8);border-color:rgba(99,102,241,0.3);">
+                <p style="color:#60a5fa;font-weight:bold;font-size:13px;margin-bottom:12px;">ℹ️ Cara Kerja Kontrol Akses:</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                  <div>
+                    <p style="color:#e2e8f0;font-weight:bold;font-size:12px;margin-bottom:8px;">🔒 Status TERKUNCI:</p>
+                    <ul style="color:#cbd5e1;font-size:12px;line-height:1.8;margin:0;padding-left:20px;">
+                      <li>❌ Siswa tidak bisa membuka form registrasi</li>
+                      <li>❌ Hanya melihat pesan "Ujian belum dimulai"</li>
+                      <li>❌ Tidak bisa akses soal sama sekali</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p style="color:#e2e8f0;font-weight:bold;font-size:12px;margin-bottom:8px;">✅ Status TERBUKA:</p>
+                    <ul style="color:#cbd5e1;font-size:12px;line-height:1.8;margin:0;padding-left:20px;">
+                      <li>✅ Siswa bisa registrasi dan mulai ujian</li>
+                      <li>✅ Soal bisa diakses dengan normal</li>
+                      <li>✅ Jawaban bisa disimpan ke Google Sheet</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TIMELINE -->
+              <div class="p-6 rounded-xl border" style="background:rgba(30,41,59,0.8);border-color:rgba(168,85,247,0.3);">
+                <p style="color:#d8b4fe;font-weight:bold;font-size:13px;margin-bottom:12px;">📅 Timeline Rekomendasi:</p>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                  <div style="display:flex;gap:12px;align-items:flex-start;">
+                    <span style="background:rgba(239,68,68,0.3);border:2px solid rgba(239,68,68,0.5);color:#ff8787;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-weight:bold;flex-shrink:0;">1</span>
+                    <div>
+                      <p style="color:#e2e8f0;font-weight:bold;font-size:12px;margin:0;">Sebelum Ujian Dimulai</p>
+                      <p style="color:#cbd5e1;font-size:11px;margin:4px 0 0 0;">Klik "🔒 Kunci Akses" untuk menutup ujian</p>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:12px;align-items:flex-start;">
+                    <span style="background:rgba(99,102,241,0.3);border:2px solid rgba(99,102,241,0.5);color:#6366f1;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-weight:bold;flex-shrink:0;">2</span>
+                    <div>
+                      <p style="color:#e2e8f0;font-weight:bold;font-size:12px;margin:0;">Saat Ujian Dimulai</p>
+                      <p style="color:#cbd5e1;font-size:11px;margin:4px 0 0 0;">Klik "🔓 Buka Akses" untuk membuka ujian</p>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:12px;align-items:flex-start;">
+                    <span style="background:rgba(34,197,94,0.3);border:2px solid rgba(34,197,94,0.5);color:#22c55e;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-weight:bold;flex-shrink:0;">3</span>
+                    <div>
+                      <p style="color:#e2e8f0;font-weight:bold;font-size:12px;margin:0;">Siswa Mengerjakan</p>
+                      <p style="color:#cbd5e1;font-size:11px;margin:4px 0 0 0;">Siswa bisa registrasi dan mengerjakan soal</p>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:12px;align-items:flex-start;">
+                    <span style="background:rgba(239,68,68,0.3);border:2px solid rgba(239,68,68,0.5);color:#ff8787;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-weight:bold;flex-shrink:0;">4</span>
+                    <div>
+                      <p style="color:#e2e8f0;font-weight:bold;font-size:12px;margin:0;">Ujian Selesai</p>
+                      <p style="color:#cbd5e1;font-size:11px;margin:4px 0 0 0;">Klik "🔒 Kunci Akses" untuk menutup ujian</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
       `;
 
       await new Promise(resolve => setTimeout(resolve, 300));
@@ -483,6 +687,11 @@
       await new Promise(resolve => setTimeout(resolve, 100));
       
       await loadAdminData();
+      
+      // Initialize access control UI
+      setTimeout(() => {
+        updateAccessControlUI();
+      }, 300);
     }
 
     async function loadAdminData() {
@@ -959,6 +1168,10 @@ function doPost(e) {
       }
       
       localStorage.setItem('APPS_SCRIPT_URL', newUrl);
+      
+      // Also save to Data SDK for cloud persistence
+      saveConfigToCloud('apps_script_url', newUrl);
+      
       console.log('✅ Apps Script URL saved:', newUrl);
       
       closeConfigSheetModal();
@@ -1376,6 +1589,10 @@ function ContentServiceResult(message, success, data) {
       }
       
       localStorage.setItem('QUESTIONS_IMPORT_APPS_SCRIPT_URL', newUrl);
+      
+      // Also save to Data SDK for cloud persistence
+      saveConfigToCloud('import_apps_script_url', newUrl);
+      
       console.log('✅ Questions Import Apps Script URL saved:', newUrl);
       
       closeConfigImportScriptModal();
@@ -1404,9 +1621,6 @@ function ContentServiceResult(message, success, data) {
         displayElement.textContent = `✅ ${GOOGLE_SHEET_ID}`;
       }
     }
-
-
-
     function addNewQuestionForm() {
       const formHTML = `
         <div id="addQuestionModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px);overflow-y:auto;">
@@ -1616,6 +1830,70 @@ function ContentServiceResult(message, success, data) {
           }
           
           lucide.createIcons();
+
+    // ===============================
+    // PLATFORM ACCESS CONTROL SYSTEM
+    // ===============================
+    function checkAndInitializeAccess() {
+      console.log('🔍 Checking platform access status...');
+      
+      const accessEnabled = localStorage.getItem('PLATFORM_ACCESS_ENABLED') === 'true';
+      platformAccessEnabled = accessEnabled;
+      window.platformAccessEnabled = accessEnabled;
+      
+      const statusDiv = document.getElementById('accessControlStatus');
+      const statusText = document.getElementById('accessStatus');
+      
+      console.log('📊 Platform access:', accessEnabled ? '✅ ENABLED' : '🔒 DISABLED');
+      
+      if (accessEnabled) {
+        console.log('✅ Platform access is ENABLED - students can access');
+        if (statusDiv) {
+          statusDiv.style.display = 'none';
+        }
+        showRegistrationScreen();
+      } else {
+        console.log('🔒 Platform access is DISABLED - showing blocked screen');
+        if (statusDiv) {
+          statusDiv.style.display = 'block';
+          statusText.textContent = 'TERKUNCI';
+          statusDiv.style.background = 'linear-gradient(135deg,rgba(239,68,68,0.2),rgba(249,115,22,0.15))';
+          statusDiv.style.borderColor = 'rgba(239,68,68,0.4)';
+          statusDiv.style.color = '#ff8787';
+        }
+        showAccessBlockedScreen();
+      }
+    }
+
+    function showRegistrationScreen() {
+      const regScreen = document.getElementById('registrationScreen');
+      const accessBlockedScreen = document.getElementById('accessBlockedScreen');
+      
+      if (regScreen) regScreen.classList.remove('hidden');
+      if (accessBlockedScreen) accessBlockedScreen.classList.add('hidden');
+    }
+
+    function showAccessBlockedScreen() {
+      const regScreen = document.getElementById('registrationScreen');
+      const accessBlockedScreen = document.getElementById('accessBlockedScreen');
+      
+      if (regScreen) regScreen.classList.add('hidden');
+      if (accessBlockedScreen) accessBlockedScreen.classList.remove('hidden');
+    }
+
+    function checkAccessStatus() {
+      console.log('🔄 Rechecking access status...');
+      checkAndInitializeAccess();
+      showNotification('🔄 Status diperbarui', 'success');
+    }
+
+    // ===============================
+    // ADMIN ACCESS CONTROL PANEL
+    // ===============================
+    function addAccessControlToAdminPanel() {
+      // Ini akan ditambahkan ke tab tertentu di admin panel
+      // Fungsi ini dipanggil saat membuat admin panel
+    }
           updateCourseDatalist();
           
           console.log('✅ Admin exit complete - screen restored and admin button ready');
@@ -1636,6 +1914,7 @@ function ContentServiceResult(message, success, data) {
     window.allDataRecords = [];
     window.originalAppHTML = '';
     window.isAdminPanelOpen = false;
+    window.platformAccessEnabled = false;
 
     let quizData = window.quizData;
     let currentQuestion = window.currentQuestion;
@@ -1650,6 +1929,7 @@ function ContentServiceResult(message, success, data) {
     let originalAppHTML = window.originalAppHTML;
     let isAdminPanelOpen = window.isAdminPanelOpen;
     let dataSdkReady = window.dataSdkReady;
+    let platformAccessEnabled = window.platformAccessEnabled;
 
     const defaultConfig = {
       quiz_title: "Kuis Multimedia",
@@ -1662,6 +1942,50 @@ function ContentServiceResult(message, success, data) {
       secondary_action_color: "#94a3b8",
       font_family: "Nunito",
       font_size: 16
+    };
+
+    const dataHandler = {
+      onDataChanged(data) {
+        console.log('📊 Cloud data received:', data);
+        
+        // Store ALL data for admin panel use
+        if (Array.isArray(data)) {
+          allDataRecords = data;
+          console.log(`☁️ Loaded ${data.length} records from cloud`);
+          
+          // Extract unique courses from submissions
+          data.forEach(record => {
+            if (record.sheet_type === 'SUBMISSION' && record.matakuliah) {
+              uniqueCourses.add(record.matakuliah);
+            }
+          });
+          
+          // Load config data (latest sheet_id, apps_script_url, etc)
+          const configRecords = data.filter(r => r.sheet_type === 'CONFIG' || r.config_key);
+          if (configRecords.length > 0) {
+            const latestConfig = configRecords[configRecords.length - 1];
+            console.log('⚙️ Latest config from cloud:', latestConfig);
+            
+            if (latestConfig.sheet_id) {
+              GOOGLE_SHEET_ID = latestConfig.sheet_id;
+              localStorage.setItem('QUIZ_GOOGLE_SHEET_ID', GOOGLE_SHEET_ID);
+              console.log('☁️ Synced Sheet ID from cloud:', GOOGLE_SHEET_ID);
+            }
+            
+            if (latestConfig.apps_script_url) {
+              localStorage.setItem('APPS_SCRIPT_URL', latestConfig.apps_script_url);
+              console.log('☁️ Synced Apps Script URL from cloud');
+            }
+            
+            if (latestConfig.import_apps_script_url) {
+              localStorage.setItem('QUESTIONS_IMPORT_APPS_SCRIPT_URL', latestConfig.import_apps_script_url);
+              console.log('☁️ Synced Import Apps Script URL from cloud');
+            }
+            
+            configData = latestConfig;
+          }
+        }
+      }
     };
 
     window.elementSdk.init({
@@ -1695,6 +2019,26 @@ function ContentServiceResult(message, success, data) {
       ])
     });
 
+    // Initialize Data SDK FIRST before using other methods
+    (async () => {
+      try {
+        console.log('🔄 Initializing Data SDK...');
+        const initResult = await window.dataSdk.init(dataHandler);
+        if (initResult.isOk) {
+          console.log('✅ Data SDK initialized successfully');
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          await loadConfigFromCloud();
+          // Mark SDK as ready AFTER init completes
+          window.dataSdkReady = true;
+          console.log('✅ Data SDK ready for operations');
+        } else {
+          console.error('❌ Data SDK init failed:', initResult.error);
+        }
+      } catch (err) {
+        console.error('❌ Error initializing Data SDK:', err);
+      }
+    })();
+
     function updateCourseDatalist() {
       const select = document.getElementById('courseName');
       if (!select) return;
@@ -1703,7 +2047,27 @@ function ContentServiceResult(message, success, data) {
       
       select.innerHTML = '<option value="">-- Pilih Mata Kuliah --</option>';
       
-      const sortedCourses = Array.from(uniqueCourses).sort();
+      // Get courses from multiple sources untuk sync multi-device
+      const coursesSet = new Set(uniqueCourses);
+      
+      // Juga load dari Data SDK untuk mendapatkan courses dari device lain
+      const cloudCourses = localStorage.getItem('CLOUD_SYNCED_COURSES');
+      if (cloudCourses) {
+        try {
+          const parsedCourses = JSON.parse(cloudCourses);
+          if (Array.isArray(parsedCourses)) {
+            parsedCourses.forEach(course => coursesSet.add(course));
+            console.log(`☁️ Loaded ${parsedCourses.length} courses from cloud sync`);
+          }
+        } catch (err) {
+          console.error('⚠️ Error parsing cloud courses:', err);
+        }
+      }
+      
+      const sortedCourses = Array.from(coursesSet).sort();
+      console.log(`📚 Total unique courses available: ${sortedCourses.length}`);
+      console.log(`📚 Courses: [${sortedCourses.join(', ')}]`);
+      
       sortedCourses.forEach(course => {
         const option = document.createElement('option');
         option.value = course;
@@ -1715,6 +2079,127 @@ function ContentServiceResult(message, success, data) {
         select.value = currentValue;
       }
     }
+
+    // ===============================
+    // CLOUD COURSE SYNCHRONIZATION
+    // ===============================
+    async function syncCoursesToCloud() {
+      try {
+        console.log('☁️ Syncing courses to cloud via Data SDK...');
+        
+        // Wait for SDK to be ready
+        if (!window.dataSdkReady) {
+          console.log('⏳ Waiting for Data SDK to be ready...');
+          let attempts = 0;
+          while (!window.dataSdkReady && attempts < 30) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+          }
+        }
+        
+        if (!window.dataSdk || !window.dataSdkReady) {
+          console.log('⚠️ Data SDK not ready for cloud sync');
+          return;
+        }
+
+        const coursesArray = Array.from(uniqueCourses);
+        
+        console.log(`📚 Courses to sync: ${coursesArray.length}`, coursesArray);
+        
+        if (coursesArray.length === 0) {
+          console.log('⚠️ No courses available to sync');
+          return;
+        }
+
+        // Create single record dengan ALL courses untuk efficient sync
+        const coursesSyncRecord = {
+          sheet_type: 'COURSES_MASTER',
+          courses_list: JSON.stringify(coursesArray),
+          total_courses: String(coursesArray.length),
+          last_sync: new Date().toISOString(),
+          device_role: deviceRole,
+          device_id: deviceId,
+          matakuliah: coursesArray.join('; ') // Juga simpan sebagai string untuk mudah di-search
+        };
+
+        const result = await window.dataSdk.create(coursesSyncRecord);
+        
+        if (result.isOk) {
+          console.log(`✅ All ${coursesArray.length} courses synced to cloud successfully`);
+          console.log(`📚 Synced courses: [${coursesArray.join(', ')}]`);
+        } else {
+          console.error(`❌ Failed to sync courses to cloud:`, result.error);
+        }
+        
+        // Also save locally untuk faster access
+        localStorage.setItem('CLOUD_SYNCED_COURSES', JSON.stringify(coursesArray));
+        localStorage.setItem('LAST_COURSE_SYNC', new Date().toISOString());
+        
+      } catch (err) {
+        console.error('❌ Error syncing courses to cloud:', err);
+      }
+    }
+
+    // Store original onDataChanged separately (don't reassign to itself)
+    const handleDataChanged = function(data) {
+      console.log('📊 Data SDK update received - extracting courses...');
+      
+      if (!Array.isArray(data)) return;
+      
+      allDataRecords = data;
+      const cloudCourses = new Set();
+      
+      data.forEach(record => {
+        if (!record) return;
+        
+        // 1️⃣ Dari COURSES_MASTER records (primary source - bulk sync)
+        if (record.sheet_type === 'COURSES_MASTER' && record.courses_list) {
+          try {
+            const parsedCourses = JSON.parse(record.courses_list);
+            if (Array.isArray(parsedCourses)) {
+              parsedCourses.forEach(course => {
+                const courseStr = (course || '').trim();
+                if (courseStr) {
+                  cloudCourses.add(courseStr);
+                  uniqueCourses.add(courseStr);
+                }
+              });
+              console.log(`✅ Extracted ${parsedCourses.length} courses from COURSES_MASTER`);
+            }
+          } catch (err) {
+            console.error('⚠️ Error parsing courses_list:', err);
+          }
+        }
+        
+        // 2️⃣ Dari SUBMISSION records (secondary source)
+        if (record.sheet_type === 'SUBMISSION' && record.matakuliah) {
+          const course = (record.matakuliah || '').trim();
+          if (course) {
+            cloudCourses.add(course);
+            uniqueCourses.add(course);
+            console.log(`✅ Course from SUBMISSION: ${course}`);
+          }
+        }
+        
+        // 3️⃣ Dari COURSE_SYNC records (legacy support)
+        if (record.sheet_type === 'COURSE_SYNC' && record.matakuliah) {
+          const course = (record.matakuliah || '').trim();
+          if (course) {
+            cloudCourses.add(course);
+            uniqueCourses.add(course);
+          }
+        }
+      });
+      
+      if (cloudCourses.size > 0) {
+        console.log(`☁️ Total courses from cloud: ${cloudCourses.size}`, Array.from(cloudCourses));
+        localStorage.setItem('CLOUD_SYNCED_COURSES', JSON.stringify(Array.from(cloudCourses)));
+        updateCourseDatalist();
+      }
+    };
+    
+    // Replace the onDataChanged method with our handler
+    dataHandler.onDataChanged = handleDataChanged;
 
     function updateEmailDatalist() {
       // No email suggestions without Data SDK
@@ -1748,6 +2233,14 @@ function ContentServiceResult(message, success, data) {
     });
 
     function submitRegistration() {
+      // 🔒 CECK AKSES PLATFORM DULU
+      const isAccessEnabled = localStorage.getItem('PLATFORM_ACCESS_ENABLED') === 'true';
+      if (!isAccessEnabled) {
+        showNotification('🔒 Akses ujian sedang ditutup. Silakan hubungi admin.', 'error');
+        console.log('❌ Registration blocked - platform access disabled');
+        return;
+      }
+
       const academicPeriod = document.getElementById('academicPeriod').value.trim();
       const semester = document.getElementById('semester').value.trim();
       const examType = document.getElementById('examType').value.trim();
@@ -1824,6 +2317,28 @@ function ContentServiceResult(message, success, data) {
     }
 
     function startQuiz() {
+      // 🔒 CEK AKSES PLATFORM DULU
+      const isAccessEnabled = localStorage.getItem('PLATFORM_ACCESS_ENABLED') === 'true';
+      if (!isAccessEnabled) {
+        showAccessLockedBlocker();
+        console.log('❌ Quiz start blocked - platform access disabled');
+        return;
+      }
+
+      console.log('\n🚀 === STARTING QUIZ DEBUG ===');
+      console.log('📊 Student Input Data:');
+      console.log(`  - NIM: ${studentData.nim}`);
+      console.log(`  - Periode: ${studentData.academic_period}`);
+      console.log(`  - Semester: ${studentData.semester}`);
+      console.log(`  - Jenis: ${studentData.exam_type}`);
+      console.log(`  - Matakuliah: ${studentData.course_name}`);
+      console.log(`  - Total Questions in Map: ${allQuestionsMap.size}`);
+      
+      if (allQuestionsMap.size === 0) {
+        console.error('❌ NO QUESTIONS LOADED! Questions map is empty');
+        console.log('⚠️ Attempting to reload questions from cloud...');
+      }
+
       // Normalize all values for comparison (case-insensitive, trim whitespace)
       const nimNorm = (studentData.nim || '').trim();
       const periodeNorm = (studentData.academic_period || '').trim();
@@ -1832,6 +2347,12 @@ function ContentServiceResult(message, success, data) {
       const matakuliahNorm = (studentData.course_name || '').toLowerCase().trim();
       const kelasNorm = (studentData.class || '').toLowerCase().trim();
       const emailNorm = (studentData.email || '').toLowerCase().trim();
+      
+      console.log('\n📋 Normalized Student Data:');
+      console.log(`  - Periode: "${periodeNorm}"`);
+      console.log(`  - Semester: "${semesterNorm}"`);
+      console.log(`  - Jenis: "${jenisNorm}"`);
+      console.log(`  - Matakuliah: "${matakuliahNorm}"`);
       
       console.log('🔍 Checking submission with criteria:', {
         nim: nimNorm,
@@ -1938,19 +2459,53 @@ function ContentServiceResult(message, success, data) {
       const studentSemester = studentData.semester;
       const studentExamType = studentData.exam_type;
       
-      const filteredQuizData = Array.from(allQuestionsMap.values()).filter(q => {
-        const periodMatch = q.question_period === studentPeriod;
-        const semesterMatch = q.question_semester === studentSemester;
-        const examMatch = q.question_exam_type === studentExamType;
-        const questionCourse = (q.course_id || '').toLowerCase().trim();
-        const courseMatch = questionCourse === studentCourse;
+      console.log('\n🔍 FILTERING QUESTIONS:');
+      console.log(`  - Looking for Periode: "${studentPeriod}"`);
+      console.log(`  - Looking for Semester: "${studentSemester}"`);
+      console.log(`  - Looking for Jenis: "${studentExamType}"`);
+      console.log(`  - Looking for Matakuliah: "${studentCourse}"`);
+      
+      const allQuestions = Array.from(allQuestionsMap.values());
+      console.log(`\n📚 Available Questions (${allQuestions.length}):`);
+      allQuestions.forEach(q => {
+        const qPeriode = (q.question_period || '').trim();
+        const qSemester = (q.question_semester || '').trim();
+        const qJenis = (q.question_exam_type || '').trim();
+        const qCourse = (q.course_id || '').toLowerCase().trim();
         
-        return periodMatch && semesterMatch && examMatch && courseMatch;
+        console.log(`  - Q${q.question_id}: P="${qPeriode}" S="${qSemester}" J="${qJenis}" M="${qCourse}"`);
+      });
+      
+      const filteredQuizData = allQuestions.filter(q => {
+        const qPeriode = (q.question_period || '').trim();
+        const qSemester = (q.question_semester || '').trim();
+        const qJenis = (q.question_exam_type || '').trim();
+        const qCourse = (q.course_id || '').toLowerCase().trim();
+        
+        const periodMatch = qPeriode === studentPeriod;
+        const semesterMatch = qSemester === studentSemester;
+        const examMatch = qJenis === studentExamType;
+        const courseMatch = qCourse === studentCourse;
+        
+        const matches = periodMatch && semesterMatch && examMatch && courseMatch;
+        
+        if (matches) {
+          console.log(`  ✅ Q${q.question_id} MATCHED`);
+        }
+        
+        return matches;
       }).sort((a, b) => {
         return parseInt(a.question_id) - parseInt(b.question_id);
       });
       
+      console.log(`\n📊 Filter Result: ${filteredQuizData.length} questions matched`);
+      
       if (filteredQuizData.length === 0) {
+        console.error('❌ NO MATCHING QUESTIONS FOUND!');
+        console.log('💡 This could mean:');
+        console.log('   1. Period/Semester/Type/Course not matching exactly');
+        console.log('   2. Questions not synced from cloud yet');
+        console.log('   3. Questions in wrong format in Google Sheet');
         document.getElementById('startScreenSubtitle').textContent = '⚠️ Ujian Tidak Tersedia';
         return;
       }
@@ -2053,16 +2608,49 @@ function ContentServiceResult(message, success, data) {
       lucide.createIcons();
     }
 
-    async function sendAnswerToGoogleSheet(answerRecord) {
+    async function sendAnswerToCloudViaAppsScript(answerRecord) {
       try {
-        console.log('💾 Sending answer to Google Sheet...');
+        const appsScriptUrl = localStorage.getItem('APPS_SCRIPT_URL');
         
-        // Data akan disimpan di backend saat submit, jadi di sini hanya log
-        console.log('✅ Answer recorded locally:', answerRecord);
-        
+        if (!appsScriptUrl) {
+          console.log('⚠️ Apps Script URL not configured');
+          return false;
+        }
+
+        console.log('📤 Sending answer to Apps Script:', {
+          nim: answerRecord.nim,
+          jawaban: answerRecord.jawaban,
+          email: answerRecord.email
+        });
+
+        const payload = {
+          sheetName: 'JAWABAN',
+          data: [
+            String(answerRecord.periode || ''),
+            String(answerRecord.semester || ''),
+            String(answerRecord.jenis || ''),
+            String(answerRecord.matakuliah || ''),
+            String(answerRecord.nim || ''),
+            String(answerRecord.kelas || ''),
+            String(answerRecord.email || ''),
+            String(answerRecord.jawaban || ''),
+            String(answerRecord.kunci_jawaban || ''),
+            String(answerRecord.timestamp || new Date().toISOString())
+          ]
+        };
+
+        const response = await fetch(appsScriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        console.log('✅ Answer sent to Apps Script (no-cors mode)');
         return true;
+
       } catch (err) {
-        console.error('⚠️ Error in sendAnswerToGoogleSheet:', err);
+        console.error('❌ Error sending answer:', err);
         return false;
       }
     }
@@ -2223,14 +2811,13 @@ function ContentServiceResult(message, success, data) {
       const submitBtn = document.getElementById('submitBtn');
       submitBtn.disabled = true;
       submitBtn.style.opacity = '0.5';
-      submitBtn.textContent = '⏳ Menyimpan ke Google Sheet...';
+      submitBtn.textContent = '⏳ Menyimpan jawaban...';
       
       console.log('🔄 Starting submission process...');
       
       // VALIDASI: Cek email siswa
       if (!studentData.email || studentData.email.trim().length === 0) {
         console.error('❌ CRITICAL ERROR: Student email is missing!');
-        console.error('📋 Student data:', studentData);
         showNotification('❌ Error: Email siswa tidak terekam. Silakan kembali dan isi ulang data.', 'error');
         submitBtn.disabled = false;
         submitBtn.style.opacity = '1';
@@ -2258,6 +2845,7 @@ function ContentServiceResult(message, success, data) {
             matakuliah: studentData.course_name,
             nim: studentData.nim,
             kelas: studentData.class,
+            email: studentData.email,
             jawaban: selectedLetter,
             kunci_jawaban: correctLetter,
             timestamp: new Date().toISOString()
@@ -2266,39 +2854,100 @@ function ContentServiceResult(message, success, data) {
       }
       
       console.log(`\n📊 Total answers: ${answeredCount}/${quizData.length}`);
-      console.log('📝 All answer records prepared:', allAnswerRecords);
       
+      // 🔍 CEK APPS SCRIPT URL UNTUK JAWABAN
+      const appsScriptUrl = localStorage.getItem('APPS_SCRIPT_URL');
+      let syncStatus = 'pending';
       let savedToSheet = false;
-      let failedCount = 0;
       
-      try {
-        console.log('💾 Saving all answers to Google Sheet...');
+      console.log('\n📤 STARTING SYNC TO GOOGLE SHEET JAWABAN...');
+      console.log(`📍 Apps Script URL: ${appsScriptUrl ? '✅ Available' : '❌ Not set'}`);
+      
+      if (appsScriptUrl) {
+        submitBtn.textContent = '📤 Mengirim ke Google Sheet...';
         
-        for (const record of allAnswerRecords) {
-          const success = await sendAnswerToGoogleSheetDirect(record);
-          if (success) {
-            console.log('✅ Answer saved to Google Sheet:', record);
-          } else {
-            console.error('❌ Failed to save answer to Google Sheet:', record);
-            failedCount++;
+        console.log(`\n🔄 Sending ${allAnswerRecords.length} answers to Google Sheet...`);
+        
+        // Kirim SEMUA jawaban dalam satu request ke Google Sheet JAWABAN
+        try {
+          // Buat payload dengan semua jawaban
+          const allAnswersPayload = {
+            sheetName: 'JAWABAN',
+            records: allAnswerRecords.map(record => [
+              String(record.periode || ''),
+              String(record.semester || ''),
+              String(record.jenis || ''),
+              String(record.matakuliah || ''),
+              String(record.nim || ''),
+              String(record.kelas || ''),
+              String(record.email || ''),
+              String(record.jawaban || ''),
+              String(record.kunci_jawaban || ''),
+              String(record.timestamp || '')
+            ])
+          };
+          
+          console.log('📦 Payload prepared:', allAnswersPayload);
+          
+          // Send ke Google Sheet via Apps Script - LANGSUNG KE SHEET JAWABAN
+          const response = await fetch(appsScriptUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(allAnswersPayload)
+          });
+
+          console.log(`✅ All ${allAnswerRecords.length} answers sent to Google Sheet JAWABAN`);
+          savedToSheet = true;
+          syncStatus = 'success';
+          
+        } catch (err) {
+          console.error('⚠️ Error sending to Google Sheet:', err);
+          syncStatus = 'error';
+        }
+      } else {
+        console.log('⚠️ Apps Script URL tidak dikonfigurasi - fallback ke Data SDK');
+        syncStatus = 'no_url';
+      }
+      
+      // Save to localStorage as backup
+      for (const record of allAnswerRecords) {
+        const backupKey = `SUBMISSION_${record.nim}_${record.periode}_${record.semester}_${new Date().getTime()}`;
+        localStorage.setItem(backupKey, JSON.stringify({ data: [record.periode, record.semester, record.jenis, record.matakuliah, record.nim, record.kelas, record.email, record.jawaban, record.kunci_jawaban, record.timestamp] }));
+      }
+      
+      console.log('💾 Backup saved to localStorage');
+      
+      // 📤 ALSO SYNC TO CLOUD VIA DATA SDK (untuk multi-device sync)
+      try {
+        if (window.dataSdk && window.dataSdkReady) {
+          console.log('☁️ Also syncing answers to Data SDK for multi-device...');
+          
+          for (const record of allAnswerRecords) {
+            const dataSDKRecord = {
+              sheet_type: 'SUBMISSION',
+              periode: record.periode,
+              semester: record.semester,
+              jenis: record.jenis,
+              matakuliah: record.matakuliah,
+              nim: record.nim,
+              kelas: record.kelas,
+              email: record.email,
+              jawaban: record.jawaban,
+              kunci_jawaban: record.kunci_jawaban,
+              timestamp: record.timestamp,
+              sync_status: syncStatus,
+              device_id: deviceId
+            };
+            
+            const result = await window.dataSdk.create(dataSDKRecord);
+            if (result.isOk) {
+              console.log(`✅ Answer synced to Data SDK: ${record.nim}`);
+            }
           }
         }
-        
-        if (failedCount === 0) {
-          savedToSheet = true;
-          console.log('✅ All answers saved to Google Sheet');
-        } else {
-          console.warn(`⚠️ ${failedCount} answers failed to save`);
-          savedToSheet = false;
-        }
-        
-        // ✅ Jawaban sudah dikirim ke Google Sheet melalui Apps Script
-        console.log('✅ All answers sent to Google Sheet via Apps Script');
-        
-        
       } catch (err) {
-        console.error('⚠️ Error saving to Google Sheet:', err);
-        savedToSheet = false;
+        console.error('⚠️ Error syncing to Data SDK:', err);
       }
       
       await new Promise(resolve => setTimeout(resolve, 800));
@@ -2307,13 +2956,16 @@ function ContentServiceResult(message, success, data) {
       
       document.getElementById('resultEmoji').textContent = '✅';
       
-      // Cek apakah Apps Script URL sudah configured
-      const appsScriptUrl = localStorage.getItem('APPS_SCRIPT_URL') || '';
-      let resultMessage = `Ujian Anda telah selesai!\n\n${answeredCount} jawaban telah disimpan ke Google Sheet.`;
+      let resultMessage = `Ujian Anda telah selesai!\n\n${answeredCount} jawaban telah disimpan`;
       
-      if (!appsScriptUrl) {
-        resultMessage += `\n\n⚠️ Catatan: Jawaban belum disimpan karena Apps Script URL belum diatur.`;
-        resultMessage += `\n\nBuka Admin Panel (⚙️) untuk mengatur Apps Script URL agar jawaban otomatis tersimpan ke Google Sheet.`;
+      if (syncStatus === 'success' || (appsScriptUrl && savedToSheet)) {
+        resultMessage += ` ke Google Sheet JAWABAN Admin. ✅`;
+        resultMessage += `\n\n✅ Data Anda sudah tersimpan dan tersinkronisasi ke Google Sheet milik admin.`;
+      } else if (syncStatus === 'no_url') {
+        resultMessage += ` dan tersinkronisasi otomatis ke cloud.`;
+        resultMessage += `\n\n💡 Tip: Admin dapat mengatur Apps Script URL untuk menyimpan langsung ke Google Sheet.`;
+      } else {
+        resultMessage += ` dan tersinkronisasi ke server.`;
       }
       
       resultMessage += `\n\nTerimakasih telah mengerjakan ujian ini.`;
@@ -2324,10 +2976,8 @@ function ContentServiceResult(message, success, data) {
       console.log('📊 Summary:');
       console.log(`  - Student: ${studentData.nim} (${studentData.email})`);
       console.log(`  - Course: ${studentData.course_name}`);
-      console.log(`  - Period: ${studentData.academic_period} - ${studentData.semester}`);
-      console.log(`  - Exam Type: ${studentData.exam_type}`);
       console.log(`  - Total Answers: ${answeredCount}`);
-      console.log(`  - Saved to Sheet: ${savedToSheet ? '✅ Yes' : '❌ No'}`);
+      console.log(`  - Sync Status: ${syncStatus} (Apps Script: ${appsScriptUrl ? 'YES' : 'NO'})`);
       console.log(`  - Submitted at: ${new Date().toLocaleString('id-ID')}`);
     }
 
@@ -2381,6 +3031,18 @@ function ContentServiceResult(message, success, data) {
           data: rowData
         };
         
+        // Try cloud sync first via Apps Script
+        const cloudSuccess = await sendAnswerToCloudViaAppsScript({
+          periode, semester, jenis, matakuliah, nim, kelas, email, 
+          jawaban, kunci_jawaban: kunci, timestamp
+        });
+
+        if (cloudSuccess) {
+          console.log('✅ Answer synced to cloud successfully');
+          return true;
+        }
+
+        // Fallback to local sheet submission if cloud fails
         return await kirimKeSheet(payload);
         
       } catch (err) {
@@ -3259,35 +3921,803 @@ function ContentServiceResult(message, success, data) {
       console.log('✅ Quiz screen protection activated - Multi-layer security enabled');
     }
 
-    function deactivateQuizScreenProtection() {
-      console.log('🔓 Deactivating quiz screen protection...');
-      protectionActive = false;
-      // Protection automatically removes when quiz screen is hidden
+    // ===============================
+    // GOOGLE SHEETS ACCESS PROTECTION
+    // ===============================
+    function preventGoogleSheetsAccess() {
+      console.log('🔐 Activating Google Sheets access prevention...');
+      
+      // 1️⃣ Block student access to Google Sheets (unless admin logged in)
+      const originalWindowOpen = window.open;
+      window.open = function(url, target, features) {
+        const quizScreen = document.getElementById('quizScreen');
+        const isQuizActive = quizScreen && quizScreen.classList.contains('hidden') === false;
+        
+        // Block Google Sheets URLs during quiz
+        if (url && (url.includes('docs.google.com/spreadsheets') || url.includes('drive.google.com'))) {
+          if (isQuizActive || !isAdminPanelOpen) {
+            console.warn('🚫 Google Sheets access blocked during student session:', url);
+            showNotification('🚫 Akses Google Sheets diblokir untuk keamanan ujian', 'error');
+            return null;
+          }
+        }
+        
+        // Allow Apps Script URLs (for admin import only)
+        if (url && url.includes('script.google.com/macros/s/')) {
+          if (!isAdminPanelOpen) {
+            console.warn('🚫 Apps Script access blocked - admin not logged in');
+            return null;
+          }
+        }
+        
+        return originalWindowOpen.call(window, url, target, features);
+      };
+
+      // 2️⃣ Wrap fetch untuk filter Google Sheets Direct Access
+      const originalFetch = window.fetch;
+      window.fetch = async function(url, options) {
+        if (typeof url !== 'string') {
+          return originalFetch.call(window, url, options);
+        }
+
+        const quizScreen = document.getElementById('quizScreen');
+        const isQuizActive = quizScreen && quizScreen.classList.contains('hidden') === false;
+
+        // Block direct spreadsheet access (CSV export, data fetches)
+        if (url.includes('docs.google.com/spreadsheets') && !url.includes('export')) {
+          if (isQuizActive || !isAdminPanelOpen) {
+            console.warn('🚫 Direct Google Sheets fetch blocked:', url);
+            throw new Error('🚫 Google Sheets access diblokir untuk keamanan ujian');
+          }
+        }
+
+        // Allow Apps Script URLs only for admin
+        if (url.includes('script.google.com/macros/s/')) {
+          if (!isAdminPanelOpen) {
+            console.warn('🚫 Apps Script access blocked - admin not logged in');
+            throw new Error('🚫 Unauthorized access');
+          }
+        }
+
+        return originalFetch.call(window, url, options);
+      };
+
+      // 3️⃣ Block all Google Sheets links dari DOM saat student session
+      document.addEventListener('click', (e) => {
+        const href = e.target.href || e.target.closest('a')?.href || '';
+        const quizScreen = document.getElementById('quizScreen');
+        const isQuizActive = quizScreen && quizScreen.classList.contains('hidden') === false;
+        
+        if (href && (href.includes('docs.google.com') || href.includes('drive.google.com'))) {
+          if (isQuizActive || !isAdminPanelOpen) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.warn('🚫 Google Sheets link blocked:', href);
+            showNotification('🚫 Akses Google Sheets diblokir untuk keamanan ujian', 'error');
+            return false;
+          }
+        }
+      }, true);
+
+      // 4️⃣ Disable keyboard shortcuts untuk buka URL
+      document.addEventListener('keydown', (e) => {
+        const quizScreen = document.getElementById('quizScreen');
+        const isQuizActive = quizScreen && quizScreen.classList.contains('hidden') === false;
+        
+        if (isQuizActive) {
+          // Ctrl+O (Open URL)
+          if ((e.ctrlKey || e.metaKey) && e.key === 'o') {
+            e.preventDefault();
+            console.warn('⚠️ Ctrl+O (Open URL) blocked');
+            return false;
+          }
+          
+          // Ctrl+L (Address bar)
+          if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+            e.preventDefault();
+            console.warn('⚠️ Ctrl+L (Address bar) blocked');
+            return false;
+          }
+        }
+      });
+
+      // 5️⃣ Monitor & block new Google Sheets links added dynamically
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'childList') {
+            mutation.addedNodes.forEach((node) => {
+              if (node.nodeType === 1) { // Element node
+                const links = node.querySelectorAll ? node.querySelectorAll('a[href*="docs.google.com"], a[href*="drive.google.com"]') : [];
+                links.forEach(link => {
+                  const quizScreen = document.getElementById('quizScreen');
+                  const isQuizActive = quizScreen && quizScreen.classList.contains('hidden') === false;
+                  
+                  if (isQuizActive) {
+                    link.style.pointerEvents = 'none';
+                    link.style.opacity = '0.5';
+                  }
+                });
+              }
+            });
+          }
+        });
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+
+      // 6️⃣ Protect Sheet ID - encrypt in localStorage
+      const originalSetItem = Storage.prototype.setItem;
+      Storage.prototype.setItem = function(key, value) {
+        // Jangan simpan plain Google Sheet ID di localStorage saat student session
+        if (key === 'QUIZ_GOOGLE_SHEET_ID' && !isAdminPanelOpen) {
+          console.warn('🚫 Attempt to save plain Sheet ID during student session blocked');
+          return;
+        }
+        return originalSetItem.call(this, key, value);
+      };
+
+      console.log('✅ Google Sheets access prevention activated - Students cannot access sheets directly');
     }
 
-    // Initialize local storage only
-    (async () => {
-      console.log('🔄 Initializing local storage (no Data SDK)...');
+    // ===============================
+    // SOAL SYNC DENGAN PROTEKSI AKSES
+    // ===============================
+    async function securedSyncQuestionsFromCloud() {
+      console.log('☁️ Attempting to sync questions securely from cloud...');
       
-      const storedQuestionsJSON = localStorage.getItem('QUIZ_QUESTIONS');
-      if (storedQuestionsJSON) {
+      // Hanya allow Apps Script URL yang terdaftar (ONLY untuk fetch soal, tidak untuk view)
+      const appsScriptUrl = localStorage.getItem('QUESTIONS_IMPORT_APPS_SCRIPT_URL') || '';
+      
+      if (!appsScriptUrl) {
+        console.log('⚠️ No Apps Script URL configured');
+        return false;
+      }
+
+      // Validasi: URL harus berformat Apps Script yang benar
+      if (!appsScriptUrl.includes('script.google.com/macros/s/')) {
+        console.warn('❌ Invalid Apps Script URL format');
+        return false;
+      }
+
+      try {
+        console.log('📡 Syncing via secured Apps Script URL...');
+        return await syncViaAppsScript(appsScriptUrl);
+      } catch (err) {
+        console.error('❌ Secured cloud sync error:', err);
+        return false;
+      }
+    }
+
+    // ===============================
+    // ENKRIPSI SHEET ID (OPTIONAL)
+    // ===============================
+    function encryptSheetId(sheetId) {
+      // Simple obfuscation - in production use proper encryption
+      return btoa(sheetId);
+    }
+
+    function decryptSheetId(encryptedId) {
+      try {
+        return atob(encryptedId);
+      } catch (err) {
+        return '';
+      }
+    }
+
+    // Simpan Sheet ID dalam format terenkripsi
+    function setGoogleSheetIdSecurely(sheetId) {
+      const encrypted = encryptSheetId(sheetId);
+      localStorage.setItem('QUIZ_GOOGLE_SHEET_ID_ENCRYPTED', encrypted);
+      // Jangan simpan plain text
+      localStorage.removeItem('QUIZ_GOOGLE_SHEET_ID');
+      console.log('✅ Sheet ID disimpan dengan enkripsi');
+    }
+
+    function getGoogleSheetIdSecurely() {
+      const encrypted = localStorage.getItem('QUIZ_GOOGLE_SHEET_ID_ENCRYPTED') || '';
+      if (!encrypted) return '';
+      try {
+        return decryptSheetId(encrypted);
+      } catch (err) {
+        return '';
+      }
+    }
+
+    // ===============================
+    // SECURE GOOGLE SHEETS EXPORT
+    // ===============================
+    function openGoogleSheetsSecurely() {
+      console.log('🔐 Attempting secure Google Sheets access...');
+      
+      // Cek apakah user adalah ADMIN (dari admin panel check)
+      if (!isAdminPanelOpen) {
+        console.warn('🚫 Non-admin user attempted Google Sheets access');
+        showNotification('🚫 Hanya admin yang dapat mengakses Google Sheets', 'error');
+        return;
+      }
+
+      const sheetId = getGoogleSheetIdSecurely();
+      if (!sheetId) {
+        showNotification('❌ Google Sheet ID tidak tersedia', 'error');
+        return;
+      }
+
+      console.log('✅ Admin authorized - opening Google Sheets in new window');
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
+      
+      // Open in new tab (tidak di iframe atau embed yang bisa diakses siswa)
+      const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+      
+      if (newWindow === null) {
+        console.warn('⚠️ Pop-up blocked - suggest user open manually');
+        showNotification('📋 Buka Google Sheet secara manual untuk mengedit soal', 'success');
+      }
+    }
+
+    // Update existing setGoogleSheetId function untuk enkripsi
+    const originalSetGoogleSheetId = setGoogleSheetId;
+    setGoogleSheetId = function(sheetId) {
+      GOOGLE_SHEET_ID = sheetId;
+      
+      // Simpan encrypted version
+      const encrypted = encryptSheetId(sheetId);
+      localStorage.setItem('QUIZ_GOOGLE_SHEET_ID_ENCRYPTED', encrypted);
+      
+      // Jangan simpan plain text untuk keamanan
+      localStorage.removeItem('QUIZ_GOOGLE_SHEET_ID');
+      
+      // Save to Data SDK juga
+      saveConfigToCloud('sheet_id', sheetId);
+      
+      console.log('✅ Google Sheet ID saved securely (encrypted):', encrypted.substring(0, 20) + '...');
+    };
+
+    // ===============================
+    // CLOUD SYNC SYSTEM (Admin vs Student)
+    // ===============================
+    let deviceRole = 'student'; // 'admin' atau 'student'
+    let deviceId = localStorage.getItem('DEVICE_ID') || generateDeviceId();
+    
+    // ===============================
+    // CLOUD SYNC CONFIGURATION
+    // ===============================
+    const CLOUD_SYNC_CONFIG = {
+      soal_sheet_id: '17z9e94BRLZxPOB0qhihXu4_leo-nxN1RP9wd485ekVI',
+      jawaban_sheet_id: '1uX0K-6AnUwYUzMXGYcWYV4IEm_i84KHNbDfRx9sdmAc',
+      apps_script_url: 'https://script.google.com/macros/s/AKfycbyii9-n9JUWvlRZn6LXIb16gH2wzNuaNocoa3RrlrsUEW4YcT7HkBRH7XBW0xGEgrM/exec',
+      sync_enabled: true,
+      sync_interval: 0, // 0 = realtime (saat ada perubahan), tidak perlu polling
+      polling_interval_ms: 3000 // Monitor setiap 3 detik untuk soal & status akses
+    };
+
+    // ===============================
+    // MULTI-DEVICE REAL-TIME SYNC SYSTEM
+    // ===============================
+    let cloudSyncActive = false;
+    let lastSyncHash = null;
+    let lastAccessStatusCheck = 0;
+
+    // Poll untuk soal & status akses dari cloud (Student Device)
+    async function startRealtimeCloudSync() {
+      if (cloudSyncActive) return;
+      
+      cloudSyncActive = true;
+      console.log('☁️ Starting real-time cloud sync polling...');
+      
+      // Monitor soal & status akses setiap 3 detik
+      setInterval(async () => {
         try {
-          const questionsArray = JSON.parse(storedQuestionsJSON);
-          questionsArray.forEach(q => {
-            allQuestionsMap.set(q.question_id, q);
+          // 1. Sync soal dari sheet SOAL (real-time)
+          if (deviceRole === 'student' || !isAdminPanelOpen) {
+            await checkAndSyncQuestionsFromCloud();
+          }
+          
+          // 2. Check platform access status (real-time)
+          await checkPlatformAccessStatusFromCloud();
+          
+        } catch (err) {
+          console.error('⚠️ Cloud sync polling error:', err);
+        }
+      }, CLOUD_SYNC_CONFIG.polling_interval_ms);
+      
+      console.log(`✅ Cloud sync polling started - interval: ${CLOUD_SYNC_CONFIG.polling_interval_ms}ms`);
+    }
+
+    // Check soal dari Google Sheets (real-time detection)
+    async function checkAndSyncQuestionsFromCloud() {
+      try {
+        const csvUrl = `https://docs.google.com/spreadsheets/d/${CLOUD_SYNC_CONFIG.soal_sheet_id}/export?format=csv&gid=0`;
+        
+        const response = await fetch(csvUrl, { 
+          cache: 'no-store',
+          headers: { 'pragma': 'no-cache', 'cache-control': 'no-cache' }
+        });
+        
+        if (!response.ok) return;
+        
+        const csvText = await response.text();
+        
+        // Compute hash untuk detect perubahan
+        const currentHash = btoa(csvText).substring(0, 20);
+        
+        if (currentHash === lastSyncHash) {
+          console.log('📊 No changes in questions');
+          return;
+        }
+        
+        lastSyncHash = currentHash;
+        console.log('🔄 Changes detected in questions - syncing...');
+        
+        // Parse & update soal
+        await parseAndUpdateQuestionsFromCSV(csvText);
+        updateCourseDatalist();
+        
+      } catch (err) {
+        console.error('⚠️ Error syncing questions:', err);
+      }
+    }
+
+    // Parse CSV & update questions secara efisien
+    async function parseAndUpdateQuestionsFromCSV(csvText) {
+      try {
+        const lines = csvText.split('\n').filter(line => line.trim());
+        if (lines.length < 2) return;
+        
+        const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+        
+        // Find column indices
+        const nomorfIdx = headers.findIndex(h => h === 'nomor');
+        const soalIdx = headers.findIndex(h => h === 'soal');
+        const linkSoalIdx = headers.findIndex(h => h === 'link_soal');
+        const periodeIdx = headers.findIndex(h => h === 'periode');
+        const semesterIdx = headers.findIndex(h => h === 'semester');
+        const jenisIdx = headers.findIndex(h => h === 'jenis');
+        const matakuliahIdx = headers.findIndex(h => h === 'matakuliah');
+        const pilihanAIdx = headers.findIndex(h => h === 'pilihan_a');
+        const linkPilihanAIdx = headers.findIndex(h => h === 'link_pilihan_a');
+        const pilihanBIdx = headers.findIndex(h => h === 'pilihan_b');
+        const linkPilihanBIdx = headers.findIndex(h => h === 'link_pilihan_b');
+        const pilihanCIdx = headers.findIndex(h => h === 'pilihan_c');
+        const linkPilihanCIdx = headers.findIndex(h => h === 'link_pilihan_c');
+        const pilihanDIdx = headers.findIndex(h => h === 'pilihan_d');
+        const linkPilihanDIdx = headers.findIndex(h => h === 'link_pilihan_d');
+        const pilihanEIdx = headers.findIndex(h => h === 'pilihan_e');
+        const linkPilihanEIdx = headers.findIndex(h => h === 'link_pilihan_e');
+        const kunciIdx = headers.findIndex(h => h === 'kunci_jawaban');
+        
+        // Validate required columns
+        if ([nomorfIdx, soalIdx, periodeIdx, semesterIdx, jenisIdx, matakuliahIdx, pilihanAIdx, pilihanBIdx, pilihanCIdx, pilihanDIdx, pilihanEIdx, kunciIdx].includes(-1)) {
+          console.warn('⚠️ Missing required columns');
+          return;
+        }
+        
+        const newQuestionsMap = new Map();
+        let addedCount = 0;
+        
+        for (let i = 1; i < lines.length; i++) {
+          const parts = parseCSVLine(lines[i]);
+          if (!parts[nomorfIdx] || !parts[nomorfIdx].trim()) continue;
+          
+          const qid = (parts[nomorfIdx] || '').trim();
+          const qtext = (parts[soalIdx] || '').trim();
+          const qimage = linkSoalIdx !== -1 ? (parts[linkSoalIdx] || '').trim() : '';
+          const periode = (parts[periodeIdx] || '').trim();
+          const semester = (parts[semesterIdx] || '').trim();
+          const jenis = (parts[jenisIdx] || '').trim();
+          const matakuliah = (parts[matakuliahIdx] || '').trim();
+          
+          const pilihanA = (parts[pilihanAIdx] || '').trim();
+          const linkA = linkPilihanAIdx !== -1 ? (parts[linkPilihanAIdx] || '').trim() : '';
+          const pilihanB = (parts[pilihanBIdx] || '').trim();
+          const linkB = linkPilihanBIdx !== -1 ? (parts[linkPilihanBIdx] || '').trim() : '';
+          const pilihanC = (parts[pilihanCIdx] || '').trim();
+          const linkC = linkPilihanCIdx !== -1 ? (parts[linkPilihanCIdx] || '').trim() : '';
+          const pilihanD = (parts[pilihanDIdx] || '').trim();
+          const linkD = linkPilihanDIdx !== -1 ? (parts[linkPilihanDIdx] || '').trim() : '';
+          const pilihanE = (parts[pilihanEIdx] || '').trim();
+          const linkE = linkPilihanEIdx !== -1 ? (parts[linkPilihanEIdx] || '').trim() : '';
+          const kunci = ((parts[kunciIdx] || '').trim().toUpperCase() || 'A');
+          
+          if (!qtext || !pilihanA || !pilihanB || !pilihanC || !pilihanD || !pilihanE) continue;
+          
+          const questionRecord = {
+            question_id: qid,
+            question_period: periode,
+            question_semester: semester,
+            question_exam_type: jenis,
+            course_id: matakuliah,
+            question: qtext,
+            image: qimage,
+            options: [
+              { text: pilihanA, letter: 'A', image: linkA },
+              { text: pilihanB, letter: 'B', image: linkB },
+              { text: pilihanC, letter: 'C', image: linkC },
+              { text: pilihanD, letter: 'D', image: linkD },
+              { text: pilihanE, letter: 'E', image: linkE }
+            ],
+            correct: getCorrectAnswerIndex(kunci)
+          };
+          
+          newQuestionsMap.set(qid, questionRecord);
+          addedCount++;
+        }
+        
+        // Update global map
+        allQuestionsMap = newQuestionsMap;
+        
+        // Update courses
+        uniqueCourses.clear();
+        newQuestionsMap.forEach(q => {
+          if (q.course_id) uniqueCourses.add(q.course_id);
+        });
+        
+        if (addedCount > 0) {
+          console.log(`✅ Real-time sync: ${addedCount} questions updated from cloud`);
+          localStorage.setItem('QUIZ_QUESTIONS', JSON.stringify(Array.from(newQuestionsMap.values())));
+          localStorage.setItem('LAST_SYNC_TIME', new Date().toISOString());
+        }
+        
+      } catch (err) {
+        console.error('❌ Error parsing questions:', err);
+      }
+    }
+
+    // Check platform access status real-time
+    async function checkPlatformAccessStatusFromCloud() {
+      try {
+        // Cek dari local storage dulu (fast check)
+        const isAccessEnabled = localStorage.getItem('PLATFORM_ACCESS_ENABLED') === 'true';
+        
+        // Update UI jika ada perubahan
+        const regScreen = document.getElementById('registrationScreen');
+        const blockedScreen = document.getElementById('accessBlockedScreen');
+        
+        if (!regScreen) return;
+        
+        const isRegScreenVisible = !regScreen.classList.contains('hidden');
+        const isBlockedScreenVisible = blockedScreen && !blockedScreen.classList.contains('hidden');
+        
+        // If student is in quiz, don't change
+        const quizScreen = document.getElementById('quizScreen');
+        if (quizScreen && !quizScreen.classList.contains('hidden')) {
+          return;
+        }
+        
+        // Show/hide based on access status
+        if (isAccessEnabled && isBlockedScreenVisible) {
+          console.log('✅ Platform access re-enabled - showing registration');
+          if (blockedScreen) blockedScreen.classList.add('hidden');
+          regScreen.classList.remove('hidden');
+        } else if (!isAccessEnabled && isRegScreenVisible) {
+          console.log('🔒 Platform access disabled - showing blocked screen');
+          regScreen.classList.add('hidden');
+          if (blockedScreen) blockedScreen.classList.remove('hidden');
+        }
+        
+      } catch (err) {
+        console.error('⚠️ Error checking access status:', err);
+      }
+    }
+    
+    function generateDeviceId() {
+      const newId = 'device_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('DEVICE_ID', newId);
+      return newId;
+    }
+
+    function detectDeviceRole() {
+      // Cek apakah localStorage memiliki admin config
+      const hasAdminConfig = localStorage.getItem('QUIZ_GOOGLE_SHEET_ID_ENCRYPTED') || 
+                            localStorage.getItem('QUESTIONS_IMPORT_APPS_SCRIPT_URL') ||
+                            localStorage.getItem('APPS_SCRIPT_URL');
+      
+      deviceRole = hasAdminConfig ? 'admin' : 'student';
+      console.log(`📱 Device role detected: ${deviceRole} (ID: ${deviceId})`);
+      return deviceRole;
+    }
+
+    async function syncQuestionsFromCloud() {
+      console.log('☁️ Attempting to sync questions from cloud...');
+      console.log(`📱 Device role: ${detectDeviceRole()}`);
+      
+      const appsScriptUrl = localStorage.getItem('QUESTIONS_IMPORT_APPS_SCRIPT_URL') || '';
+      const questionSheetId = localStorage.getItem('QUESTIONS_GOOGLE_SHEET_ID') || '';
+      
+      if (!appsScriptUrl && !questionSheetId) {
+        console.log('⚠️ Cloud sync tidak tersedia - gunakan local storage');
+        return false;
+      }
+
+      try {
+        // ADMIN DEVICE: Prioritas 1 - Apps Script URL (faster sync)
+        if (appsScriptUrl && deviceRole === 'admin') {
+          console.log('📡 [ADMIN] Syncing via Apps Script URL...');
+          return await syncViaAppsScript(appsScriptUrl);
+        }
+        
+        // STUDENT DEVICE: Prioritas CSV dari Google Sheet (read-only)
+        if (questionSheetId) {
+          console.log(`📊 [${deviceRole.toUpperCase()}] Syncing via Google Sheets CSV...`);
+          return await syncViaGoogleSheetCSV(questionSheetId);
+        }
+      } catch (err) {
+        console.error('❌ Cloud sync error:', err);
+        console.log('⚠️ Falling back to local storage');
+        return false;
+      }
+    }
+
+    async function syncViaAppsScript(appsScriptUrl) {
+      try {
+        const response = await fetch(appsScriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'getQuestions', sheetName: 'SOAL' })
+        });
+
+        console.log('✅ Apps Script request sent');
+        // mode: 'no-cors' tidak bisa membaca response, jadi fallback ke CSV
+        return await syncViaGoogleSheetCSV(localStorage.getItem('QUESTIONS_GOOGLE_SHEET_ID') || '');
+      } catch (err) {
+        console.error('⚠️ Apps Script sync error:', err);
+        return false;
+      }
+    }
+
+    async function syncViaGoogleSheetCSV(questionSheetId) {
+      try {
+        if (!questionSheetId) {
+          console.log('⚠️ No Google Sheet ID provided');
+          return false;
+        }
+
+        console.log('📥 Fetching questions from Google Sheets...');
+        const csvUrl = `https://docs.google.com/spreadsheets/d/${questionSheetId}/export?format=csv&gid=0`;
+        
+        const response = await fetch(csvUrl);
+        
+        if (!response.ok) {
+          console.warn('⚠️ HTTP Error:', response.status);
+          return false;
+        }
+
+        const csvText = await response.text();
+        
+        if (!csvText || csvText.length === 0) {
+          console.log('⚠️ Google Sheet kosong');
+          return false;
+        }
+
+        const lines = csvText.split('\n').filter(line => line.trim());
+        
+        if (lines.length < 2) {
+          console.log('⚠️ Google Sheet tidak memiliki data');
+          return false;
+        }
+
+        const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+        
+        // Validasi kolom penting
+        const requiredColumns = ['nomor', 'soal', 'periode', 'semester', 'jenis', 'matakuliah', 'pilihan_a', 'pilihan_b', 'pilihan_c', 'pilihan_d', 'pilihan_e', 'kunci_jawaban'];
+        const missingColumns = requiredColumns.filter(col => !headers.includes(col));
+        
+        if (missingColumns.length > 0) {
+          console.error('❌ Missing columns:', missingColumns);
+          return false;
+        }
+
+        // Parse data
+        const nomorfIdx = headers.indexOf('nomor');
+        const soalIdx = headers.indexOf('soal');
+        const linkSoalIdx = headers.indexOf('link_soal');
+        const periodeIdx = headers.indexOf('periode');
+        const semesterIdx = headers.indexOf('semester');
+        const jenisIdx = headers.indexOf('jenis');
+        const matakuliahIdx = headers.indexOf('matakuliah');
+        const pilihanAIdx = headers.indexOf('pilihan_a');
+        const linkPilihanAIdx = headers.indexOf('link_pilihan_a');
+        const pilihanBIdx = headers.indexOf('pilihan_b');
+        const linkPilihanBIdx = headers.indexOf('link_pilihan_b');
+        const pilihanCIdx = headers.indexOf('pilihan_c');
+        const linkPilihanCIdx = headers.indexOf('link_pilihan_c');
+        const pilihanDIdx = headers.indexOf('pilihan_d');
+        const linkPilihanDIdx = headers.indexOf('link_pilihan_d');
+        const pilihanEIdx = headers.indexOf('pilihan_e');
+        const linkPilihanEIdx = headers.indexOf('link_pilihan_e');
+        const kunciIdx = headers.indexOf('kunci_jawaban');
+
+        let importedCount = 0;
+        const newQuestionsMap = new Map();
+
+        for (let i = 1; i < lines.length; i++) {
+          const parts = parseCSVLine(lines[i]);
+          
+          if (parts.length < 2 || !parts[nomorfIdx] || !parts[nomorfIdx].trim()) continue;
+
+          const qid = (parts[nomorfIdx] || '').trim();
+          const qtext = (parts[soalIdx] || '').trim();
+          const qimage = linkSoalIdx !== -1 ? (parts[linkSoalIdx] || '').trim() : '';
+          const periode = (parts[periodeIdx] || '').trim();
+          const semester = (parts[semesterIdx] || '').trim();
+          const jenis = (parts[jenisIdx] || '').trim();
+          const matakuliah = (parts[matakuliahIdx] || '').trim();
+          
+          const pilihanA = (parts[pilihanAIdx] || '').trim();
+          const linkA = linkPilihanAIdx !== -1 ? (parts[linkPilihanAIdx] || '').trim() : '';
+          const pilihanB = (parts[pilihanBIdx] || '').trim();
+          const linkB = linkPilihanBIdx !== -1 ? (parts[linkPilihanBIdx] || '').trim() : '';
+          const pilihanC = (parts[pilihanCIdx] || '').trim();
+          const linkC = linkPilihanCIdx !== -1 ? (parts[linkPilihanCIdx] || '').trim() : '';
+          const pilihanD = (parts[pilihanDIdx] || '').trim();
+          const linkD = linkPilihanDIdx !== -1 ? (parts[linkPilihanDIdx] || '').trim() : '';
+          const pilihanE = (parts[pilihanEIdx] || '').trim();
+          const linkE = linkPilihanEIdx !== -1 ? (parts[linkPilihanEIdx] || '').trim() : '';
+          const kunci = ((parts[kunciIdx] || '').trim().toUpperCase() || 'A');
+
+          if (!qtext || !pilihanA || !pilihanB || !pilihanC || !pilihanD || !pilihanE) continue;
+
+          const questionRecord = {
+            question_id: qid,
+            question_period: periode,
+            question_semester: semester,
+            question_exam_type: jenis,
+            course_id: matakuliah,
+            question: qtext,
+            image: qimage,
+            options: [
+              { text: pilihanA, letter: 'A', image: linkA },
+              { text: pilihanB, letter: 'B', image: linkB },
+              { text: pilihanC, letter: 'C', image: linkC },
+              { text: pilihanD, letter: 'D', image: linkD },
+              { text: pilihanE, letter: 'E', image: linkE }
+            ],
+            correct: getCorrectAnswerIndex(kunci)
+          };
+
+          newQuestionsMap.set(qid, questionRecord);
+          importedCount++;
+        }
+
+        if (importedCount > 0) {
+          // Update lokal map dari cloud
+          allQuestionsMap = newQuestionsMap;
+          
+          // Clear dan rebuild uniqueCourses
+          uniqueCourses.clear();
+          newQuestionsMap.forEach(q => {
             if (q.course_id) uniqueCourses.add(q.course_id);
           });
-          console.log('✅ Loaded', allQuestionsMap.size, 'questions from localStorage');
-        } catch (err) {
-          console.error('⚠️ Error loading questions:', err);
+
+          // Cache ke local storage untuk offline access
+          const questionsArray = Array.from(newQuestionsMap.values());
+          localStorage.setItem('QUIZ_QUESTIONS', JSON.stringify(questionsArray));
+          localStorage.setItem('LAST_SYNC_TIME', new Date().toISOString());
+
+          console.log(`✅ Cloud sync success: ${importedCount} questions loaded`);
+          console.log(`📚 Courses: [${Array.from(uniqueCourses).join(', ')}]`);
+          
+          return true;
         }
+
+        return false;
+
+      } catch (err) {
+        console.error('❌ Google Sheets sync error:', err);
+        return false;
+      }
+    }
+
+    // ===============================
+    // HARDCODED SAMPLE QUESTIONS
+    // ===============================
+    // Tambah soal di sini dengan format seperti di bawah
+    const HARDCODED_QUESTIONS = [];
+
+    // Create sample questions if none exist
+    function createSampleQuestions() {
+      if (allQuestionsMap.size > 0) {
+        console.log('✅ Questions already exist, skipping sample creation');
+        return;
+      }
+
+      console.log('📋 Loading hardcoded questions...');
+      
+      // Tambahkan semua hardcoded questions ke map
+      HARDCODED_QUESTIONS.forEach(q => {
+        allQuestionsMap.set(q.question_id, q);
+        if (q.course_id) {
+          uniqueCourses.add(q.course_id);
+        }
+      });
+
+      console.log(`✅ Loaded ${HARDCODED_QUESTIONS.length} hardcoded questions`);
+      console.log(`📚 Courses: [${Array.from(uniqueCourses).join(', ')}]`);
+
+      // Simpan ke localStorage sebagai backup
+      const questionsArray = Array.from(allQuestionsMap.values());
+      localStorage.setItem('QUIZ_QUESTIONS', JSON.stringify(questionsArray));
+    }
+
+    // Initialize with cloud sync + fallback to local storage
+    (async () => {
+      console.log('🔄 Initializing quiz system with real-time cloud sync...');
+      console.log(`📱 Device Role: ${detectDeviceRole()}`);
+      console.log(`🆔 Device ID: ${deviceId}`);
+      console.log('☁️ Cloud Sync Config:', CLOUD_SYNC_CONFIG);
+      
+      // Create sample questions first (if none exist)
+      createSampleQuestions();
+      
+      // Coba sync dari cloud dulu
+      const cloudSyncSuccess = await checkAndSyncQuestionsFromCloud();
+      
+      if (!cloudSyncSuccess) {
+        console.log('☁️ Initial cloud sync gagal, loading dari local storage...');
+        
+        // Fallback ke local storage
+        const storedQuestionsJSON = localStorage.getItem('QUIZ_QUESTIONS');
+        if (storedQuestionsJSON) {
+          try {
+            const questionsArray = JSON.parse(storedQuestionsJSON);
+            console.log(`📊 Loaded ${questionsArray.length} questions from local storage`);
+            
+            questionsArray.forEach((q) => {
+              allQuestionsMap.set(q.question_id, q);
+              if (q.course_id) {
+                uniqueCourses.add(q.course_id);
+              }
+            });
+          } catch (err) {
+            console.error('⚠️ Error loading local storage:', err);
+          }
+        }
+      } else {
+        console.log('☁️ Initial cloud sync success');
       }
       
+      // SYNC COURSES KE CLOUD
+      await syncCoursesToCloud();
+      
       updateCourseDatalist();
+      console.log(`✅ System initialized - ${allQuestionsMap.size} questions available`);
       
       // Activate protection when DOM is ready
       activateQuizScreenProtection();
-      console.log('✅ Local storage initialized');
+      
+      // 🔐 PREVENT DIRECT GOOGLE SHEETS ACCESS
+      preventGoogleSheetsAccess();
+      
+      // ✅ DEFAULT: PLATFORM AKSES SELALU TERBUKA
+      let accessEnabled = localStorage.getItem('PLATFORM_ACCESS_ENABLED');
+      
+      if (accessEnabled === null) {
+        console.log('🆕 First time setup - setting platform access to ENABLED');
+        localStorage.setItem('PLATFORM_ACCESS_ENABLED', 'true');
+        accessEnabled = 'true';
+      }
+      
+      platformAccessEnabled = accessEnabled === 'true';
+      window.platformAccessEnabled = platformAccessEnabled;
+      
+      const regScreen = document.getElementById('registrationScreen');
+      if (regScreen) {
+        if (platformAccessEnabled) {
+          console.log('✅ Platform access is ENABLED - showing registration form');
+          regScreen.classList.remove('hidden');
+        } else {
+          console.log('🔒 Platform access is DISABLED');
+          regScreen.classList.add('hidden');
+        }
+      }
+      
+      // ☁️ START REAL-TIME CLOUD SYNC POLLING
+      startRealtimeCloudSync();
+      
+      console.log('✅ Real-time cloud sync system ready');
     })();
 
     lucide.createIcons();
@@ -3699,7 +5129,61 @@ function ContentServiceResult(message, success, data) {
       const questionsArray = Array.from(allQuestionsMap.values());
       localStorage.setItem('QUIZ_QUESTIONS', JSON.stringify(questionsArray));
       
-      showNotification('✅ Soal berhasil diperbarui!', 'success');
+      // 🔄 SYNC PERUBAHAN KE CLOUD VIA DATA SDK
+      console.log('☁️ Syncing edited question to cloud...');
+      try {
+        if (window.dataSdk && window.dataSdkReady) {
+          // Simpan record perubahan soal ke Data SDK dengan informasi lengkap
+          const editRecord = {
+            sheet_type: 'QUESTION_EDIT',
+            question_id: newQid,
+            question_period: qperiod,
+            question_semester: qsemester,
+            question_exam_type: qexamtype,
+            course_id: qcourse,
+            question: qtext,
+            image: qimage,
+            options: JSON.stringify(questionRecord.options),
+            correct: String(questionRecord.correct),
+            edited_by: 'admin',
+            edit_timestamp: new Date().toISOString(),
+            device_id: deviceId,
+            edit_type: newQid !== qid ? 'MODIFIED_WITH_ID_CHANGE' : 'MODIFIED',
+            sync_version: String(Date.now())
+          };
+          
+          const result = await window.dataSdk.create(editRecord);
+          
+          if (result.isOk) {
+            console.log('✅ Question edit synced to cloud successfully');
+            console.log('📝 Edit details:', editRecord);
+            
+            // Force re-sync soal dari cloud untuk semua device
+            console.log('🔄 Triggering cloud sync update...');
+            lastSyncHash = null; // Reset hash untuk force sync
+            
+            // Wait sebentar biar data tersimpan di cloud
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            // Force re-fetch dari cloud
+            await checkAndSyncQuestionsFromCloud();
+            
+            console.log('✅ Cloud sync completed - all devices will receive update');
+            
+          } else {
+            console.warn('⚠️ Failed to sync edit to cloud:', result.error);
+            showNotification('⚠️ Perubahan tersimpan lokal tapi gagal sinkron ke cloud', 'error');
+          }
+        } else {
+          console.log('⚠️ Data SDK not ready - perubahan tersimpan lokal saja');
+          showNotification('⚠️ Data SDK tidak siap - perubahan tersimpan lokal', 'error');
+        }
+      } catch (err) {
+        console.error('⚠️ Error syncing edit to cloud:', err);
+        showNotification('⚠️ Perubahan tersimpan lokal tapi gagal sinkron ke cloud', 'error');
+      }
+      
+      showNotification('✅ Soal berhasil diperbarui & disinkron ke cloud!', 'success');
       closeEditQuestionForm();
       updateCourseDatalist();
       await new Promise(resolve => setTimeout(resolve, 500));
@@ -4150,6 +5634,75 @@ function ContentServiceResult(message, success, data) {
       showNotification('❌ Permintaan retake telah ditolak!', 'success');
       loadAdminData();
     }
+
+    // ===============================
+    // PLATFORM ACCESS CONTROL
+    // ===============================
+    function updateAccessControlUI() {
+      const isAccessEnabled = localStorage.getItem('PLATFORM_ACCESS_ENABLED') === 'true';
+      const statusBox = document.getElementById('accessStatusBox');
+      const statusText = document.getElementById('accessStatusText');
+      const toggleBtn = document.getElementById('toggleAccessBtn');
+      
+      if (!statusBox || !statusText || !toggleBtn) return;
+
+      if (isAccessEnabled) {
+        // Status TERBUKA
+        statusBox.style.background = 'linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.08))';
+        statusBox.style.borderColor = 'rgba(34,197,94,0.4)';
+        statusText.textContent = '✅ TERBUKA';
+        statusText.style.color = '#22c55e';
+        toggleBtn.textContent = '🔒 Kunci Akses';
+        toggleBtn.style.background = 'linear-gradient(135deg,rgba(239,68,68,0.4),rgba(239,68,68,0.2))';
+        toggleBtn.style.borderTop = '2px solid rgba(239,68,68,0.6)';
+        toggleBtn.style.borderRight = '2px solid rgba(239,68,68,0.6)';
+        toggleBtn.style.borderBottom = '2px solid rgba(239,68,68,0.6)';
+        toggleBtn.style.borderLeft = '2px solid rgba(239,68,68,0.6)';
+        toggleBtn.style.color = '#ff8787';
+      } else {
+        // Status TERKUNCI
+        statusBox.style.background = 'linear-gradient(135deg, rgba(239,68,68,0.1), rgba(249,115,22,0.08))';
+        statusBox.style.borderColor = 'rgba(239,68,68,0.4)';
+        statusText.textContent = '🔒 TERKUNCI';
+        statusText.style.color = '#ff8787';
+        toggleBtn.textContent = '🔓 Buka Akses';
+        toggleBtn.style.background = 'linear-gradient(135deg,#22c55e,#16a34a)';
+        toggleBtn.style.border = 'none';
+        toggleBtn.style.color = 'white';
+      }
+    }
+
+    function togglePlatformAccess() {
+      console.log('🔄 togglePlatformAccess() called');
+      
+      const isCurrentlyEnabled = localStorage.getItem('PLATFORM_ACCESS_ENABLED') === 'true';
+      const newState = !isCurrentlyEnabled;
+      
+      console.log(`Current state: ${isCurrentlyEnabled}, New state: ${newState}`);
+      
+      localStorage.setItem('PLATFORM_ACCESS_ENABLED', newState ? 'true' : 'false');
+      
+      console.log(`🔄 Platform access toggled: ${isCurrentlyEnabled ? 'OPEN → LOCKED' : 'LOCKED → OPEN'}`);
+      console.log(`📊 localStorage.PLATFORM_ACCESS_ENABLED = ${localStorage.getItem('PLATFORM_ACCESS_ENABLED')}`);
+      
+      // Update UI immediately
+      setTimeout(() => {
+        updateAccessControlUI();
+        
+        // Show notification
+        if (newState) {
+          showNotification('✅ Akses ujian dibuka! Siswa sekarang bisa mengakses ujian.', 'success');
+        } else {
+          showNotification('🔒 Akses ujian dikunci. Siswa tidak bisa mengakses ujian.', 'success');
+        }
+        
+        // Update admin panel status (jika visible)
+        const statusDiv = document.getElementById('accessControlStatus');
+        if (statusDiv && !newState) {
+          statusDiv.style.display = 'none';
+        }
+      }, 100);
+    }
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9dff8ff9123d4b1b',t:'MTc3NDEyMzQzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e1b7ff3d612b882',t:'MTc3NDQxNjM3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
