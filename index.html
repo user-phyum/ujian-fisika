@@ -2855,60 +2855,109 @@ function ContentServiceResult(message, success, data) {
       
       console.log(`\n📊 Total answers: ${answeredCount}/${quizData.length}`);
       
-      // 🔍 CEK APPS SCRIPT URL UNTUK JAWABAN
-      const appsScriptUrl = localStorage.getItem('APPS_SCRIPT_URL');
-      let syncStatus = 'pending';
-      let savedToSheet = false;
-      
-      console.log('\n📤 STARTING SYNC TO GOOGLE SHEET JAWABAN...');
-      console.log(`📍 Apps Script URL: ${appsScriptUrl ? '✅ Available' : '❌ Not set'}`);
-      
-      if (appsScriptUrl) {
-        submitBtn.textContent = '📤 Mengirim ke Google Sheet...';
-        
-        console.log(`\n🔄 Sending ${allAnswerRecords.length} answers to Google Sheet...`);
-        
-        // Kirim SEMUA jawaban dalam satu request ke Google Sheet JAWABAN
-        try {
-          // Buat payload dengan semua jawaban
-          const allAnswersPayload = {
-            sheetName: 'JAWABAN',
-            records: allAnswerRecords.map(record => [
-              String(record.periode || ''),
-              String(record.semester || ''),
-              String(record.jenis || ''),
-              String(record.matakuliah || ''),
-              String(record.nim || ''),
-              String(record.kelas || ''),
-              String(record.email || ''),
-              String(record.jawaban || ''),
-              String(record.kunci_jawaban || ''),
-              String(record.timestamp || '')
-            ])
-          };
-          
-          console.log('📦 Payload prepared:', allAnswersPayload);
-          
-          // Send ke Google Sheet via Apps Script - LANGSUNG KE SHEET JAWABAN
-          const response = await fetch(appsScriptUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(allAnswersPayload)
-          });
+      async function confirmSubmit() {
+  closeSubmitConfirm();
 
-          console.log(`✅ All ${allAnswerRecords.length} answers sent to Google Sheet JAWABAN`);
-          savedToSheet = true;
-          syncStatus = 'success';
-          
-        } catch (err) {
-          console.error('⚠️ Error sending to Google Sheet:', err);
-          syncStatus = 'error';
-        }
-      } else {
-        console.log('⚠️ Apps Script URL tidak dikonfigurasi - fallback ke Data SDK');
-        syncStatus = 'no_url';
-      }
+  const submitBtn = document.getElementById("submitBtn");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "⏳ Mengirim...";
+
+  // =========================
+  // 🔹 DATA IDENTITAS
+  // =========================
+  const dataIdentitas = {
+    periode: document.getElementById("academicPeriod").value,
+    semester: document.getElementById("semester").value,
+    jenis: document.getElementById("examType").value,
+    matakuliah: document.getElementById("courseName").value,
+    nim: document.getElementById("nim").value,
+    kelas: document.getElementById("class").value,
+    email: document.getElementById("email").value,
+  };
+
+  // =========================
+  // 🔹 SIAPKAN JAWABAN
+  // =========================
+  const timestamp = new Date().toISOString();
+
+  const allAnswerRecords = Object.keys(userAnswers).map((qIndex) => {
+    return {
+      ...dataIdentitas,
+      jawaban: userAnswers[qIndex],
+      kunci_jawaban: questions[qIndex]?.correct ?? "",
+      timestamp: timestamp
+    };
+  });
+
+  console.log("📦 Semua jawaban:", allAnswerRecords);
+
+  // =========================
+  // 🔹 AMBIL URL APPS SCRIPT
+  // =========================
+  const appsScriptUrl = localStorage.getItem('APPS_SCRIPT_URL');
+
+  if (!appsScriptUrl) {
+    alert("❌ URL Apps Script belum diatur!");
+    submitBtn.disabled = false;
+    submitBtn.textContent = "💾 Kirim Semua Jawaban";
+    return;
+  }
+
+  // =========================
+  // 🔹 FORMAT PAYLOAD (BULK)
+  // =========================
+  const payload = {
+    sheetName: "JAWABAN",
+    records: allAnswerRecords.map(r => [
+      r.periode,
+      r.semester,
+      r.jenis,
+      r.matakuliah,
+      r.nim,
+      r.kelas,
+      r.email,
+      r.jawaban,
+      r.kunci_jawaban,
+      r.timestamp
+    ])
+  };
+
+  console.log("📤 Payload:", payload);
+
+  // =========================
+  // 🔹 KIRIM KE GOOGLE SHEET
+  // =========================
+  try {
+    submitBtn.textContent = "📤 Mengirim ke Google Sheet...";
+
+    const response = await fetch(appsScriptUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.json();
+    console.log("✅ RESPONSE:", result);
+
+    if (result.status === "success") {
+      console.log("🎉 Data berhasil masuk Google Sheet");
+    } else {
+      throw new Error(result.message);
+    }
+
+  } catch (err) {
+    console.error("❌ Gagal kirim:", err);
+    alert("⚠️ Gagal menyimpan ke Google Sheet");
+  }
+
+  // =========================
+  // 🔹 LANJUT KE HASIL
+  // =========================
+  submitBtn.textContent = "✅ Selesai";
+  showResultScreen();
+}
       
       // Save to localStorage as backup
       for (const record of allAnswerRecords) {
