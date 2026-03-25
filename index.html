@@ -2802,126 +2802,81 @@ function ContentServiceResult(message, success, data) {
     }
 
     function closeSubmitConfirm() {
-      document.getElementById('submitModal').classList.add('hidden');
-    }
+  document.getElementById('submitModal').classList.add('hidden');
+}
 
-    async function confirmSubmit() {
-      closeSubmitConfirm();
-      
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = true;
-      submitBtn.style.opacity = '0.5';
-      submitBtn.textContent = '⏳ Menyimpan jawaban...';
-      
-      console.log('🔄 Starting submission process...');
-      
-      // VALIDASI: Cek email siswa
-      if (!studentData.email || studentData.email.trim().length === 0) {
-        console.error('❌ CRITICAL ERROR: Student email is missing!');
-        showNotification('❌ Error: Email siswa tidak terekam. Silakan kembali dan isi ulang data.', 'error');
-        submitBtn.disabled = false;
-        submitBtn.style.opacity = '1';
-        submitBtn.textContent = '💾 Kirim Semua Jawaban';
-        exitToEditIdentity();
-        return;
-      }
-      
-      let answeredCount = 0;
-      const answerLetters = ['A', 'B', 'C', 'D', 'E'];
-      const allAnswerRecords = [];
-      
-      for (let i = 0; i < quizData.length; i++) {
-        if (studentAnswers[i] !== undefined && studentAnswers[i] !== null) {
-          answeredCount++;
-          const q = quizData[i];
-          const selectedIdx = studentAnswers[i];
-          const selectedLetter = answerLetters[selectedIdx];
-          const correctLetter = answerLetters[q.correct];
-          
-          allAnswerRecords.push({
-            periode: studentData.academic_period,
-            semester: studentData.semester,
-            jenis: studentData.exam_type,
-            matakuliah: studentData.course_name,
-            nim: studentData.nim,
-            kelas: studentData.class,
-            email: studentData.email,
-            jawaban: selectedLetter,
-            kunci_jawaban: correctLetter,
-            timestamp: new Date().toISOString()
-          });
-        }
-      }
-      
-      console.log(`\n📊 Total answers: ${answeredCount}/${quizData.length}`);
-      
-  // =========================
-  // 🔹 DATA IDENTITAS
-  // =========================
-  const dataIdentitas = {
-    periode: document.getElementById("academicPeriod").value,
-    semester: document.getElementById("semester").value,
-    jenis: document.getElementById("examType").value,
-    matakuliah: document.getElementById("courseName").value,
-    nim: document.getElementById("nim").value,
-    kelas: document.getElementById("class").value,
-    email: document.getElementById("email").value,
-  };
+async function confirmSubmit() {
+  closeSubmitConfirm();
+
+  const submitBtn = document.getElementById('submitBtn');
+  if (submitBtn.disabled) return;
+
+  submitBtn.disabled = true;
+  submitBtn.style.opacity = '0.5';
+  submitBtn.textContent = '⏳ Mengirim ke Google Sheet...';
+
+  console.log('🚀 START SUBMIT');
 
   // =========================
-  // 🔹 SIAPKAN JAWABAN
+  // 🔹 VALIDASI EMAIL
   // =========================
-  const timestamp = new Date().toISOString();
-
-  const allAnswerRecords = Object.keys(userAnswers).map((qIndex) => {
-    return {
-      ...dataIdentitas,
-      jawaban: userAnswers[qIndex],
-      kunci_jawaban: questions[qIndex]?.correct ?? "",
-      timestamp: timestamp
-    };
-  });
-
-  console.log("📦 Semua jawaban:", allAnswerRecords);
-
-  // =========================
-  // 🔹 AMBIL URL APPS SCRIPT
-  // =========================
-  const appsScriptUrl = localStorage.getItem('APPS_SCRIPT_URL');
-
-  if (!appsScriptUrl) {
-    alert("❌ URL Apps Script belum diatur!");
+  if (!studentData.email || studentData.email.trim() === '') {
+    alert('❌ Email wajib diisi!');
     submitBtn.disabled = false;
-    submitBtn.textContent = "💾 Kirim Semua Jawaban";
+    submitBtn.style.opacity = '1';
+    submitBtn.textContent = '💾 Kirim Semua Jawaban';
+    exitToEditIdentity();
     return;
   }
 
-  // =========================
-  // 🔹 FORMAT PAYLOAD (BULK)
-  // =========================
-  const payload = {
-    sheetName: "JAWABAN",
-    records: allAnswerRecords.map(r => [
-      r.periode,
-      r.semester,
-      r.jenis,
-      r.matakuliah,
-      r.nim,
-      r.kelas,
-      r.email,
-      r.jawaban,
-      r.kunci_jawaban,
-      r.timestamp
-    ])
-  };
+  const answerLetters = ['A', 'B', 'C', 'D', 'E'];
+  const timestamp = new Date().toISOString();
 
-  console.log("📤 Payload:", payload);
+  let answeredCount = 0;
+  const records = [];
+
+  // =========================
+  // 🔹 AMBIL SEMUA JAWABAN
+  // =========================
+  for (let i = 0; i < quizData.length; i++) {
+    if (studentAnswers[i] !== undefined && studentAnswers[i] !== null) {
+      answeredCount++;
+
+      const q = quizData[i];
+
+      records.push([
+        String(studentData.academic_period || ''),
+        String(studentData.semester || ''),
+        String(studentData.exam_type || ''),
+        String(studentData.course_name || ''),
+        String(studentData.nim || ''),
+        String(studentData.class || ''),
+        String(studentData.email || ''),
+        String(answerLetters[studentAnswers[i]] || ''),
+        String(answerLetters[q.correct] || ''),
+        String(timestamp)
+      ]);
+    }
+  }
+
+  console.log(`📊 Total jawaban: ${answeredCount}`);
+  console.log("📦 RECORDS:", records);
+
+  // =========================
+  // 🔹 URL APPS SCRIPT (LANGSUNG)
+  // =========================
+  const appsScriptUrl = "https://script.google.com/macros/s/AKfycbyii9-n9JUWvlRZn6LXIb16gH2wzNuaNocoa3RrlrsUEW4YcT7HkBRH7XBW0xGEgrM/exec";
 
   // =========================
   // 🔹 KIRIM KE GOOGLE SHEET
   // =========================
   try {
-    submitBtn.textContent = "📤 Mengirim ke Google Sheet...";
+    const payload = {
+      sheetName: "JAWABAN",
+      records: records
+    };
+
+    console.log("📤 Payload:", payload);
 
     const response = await fetch(appsScriptUrl, {
       method: "POST",
@@ -2932,98 +2887,49 @@ function ContentServiceResult(message, success, data) {
     });
 
     const result = await response.json();
-    console.log("✅ RESPONSE:", result);
+    console.log("📨 RESPONSE:", result);
 
-    if (result.status === "success") {
-      console.log("🎉 Data berhasil masuk Google Sheet");
-    } else {
-      throw new Error(result.message);
+    if (result.status !== "success") {
+      throw new Error(result.message || "Gagal dari Apps Script");
     }
 
+    submitBtn.textContent = "✅ Berhasil disimpan";
+
   } catch (err) {
-    console.error("❌ Gagal kirim:", err);
+    console.error("❌ ERROR:", err);
+
     alert("⚠️ Gagal menyimpan ke Google Sheet");
+
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = '1';
+    submitBtn.textContent = '💾 Kirim Semua Jawaban';
+    return;
   }
 
   // =========================
-  // 🔹 LANJUT KE HASIL
+  // 🔹 BACKUP KE LOCAL (OPSIONAL)
   // =========================
-  submitBtn.textContent = "✅ Selesai";
-  showResultScreen();
-}
-      
-      // Save to localStorage as backup
-      for (const record of allAnswerRecords) {
-        const backupKey = `SUBMISSION_${record.nim}_${record.periode}_${record.semester}_${new Date().getTime()}`;
-        localStorage.setItem(backupKey, JSON.stringify({ data: [record.periode, record.semester, record.jenis, record.matakuliah, record.nim, record.kelas, record.email, record.jawaban, record.kunci_jawaban, record.timestamp] }));
-      }
-      
-      console.log('💾 Backup saved to localStorage');
-      
-      // 📤 ALSO SYNC TO CLOUD VIA DATA SDK (untuk multi-device sync)
-      try {
-        if (window.dataSdk && window.dataSdkReady) {
-          console.log('☁️ Also syncing answers to Data SDK for multi-device...');
-          
-          for (const record of allAnswerRecords) {
-            const dataSDKRecord = {
-              sheet_type: 'SUBMISSION',
-              periode: record.periode,
-              semester: record.semester,
-              jenis: record.jenis,
-              matakuliah: record.matakuliah,
-              nim: record.nim,
-              kelas: record.kelas,
-              email: record.email,
-              jawaban: record.jawaban,
-              kunci_jawaban: record.kunci_jawaban,
-              timestamp: record.timestamp,
-              sync_status: syncStatus,
-              device_id: deviceId
-            };
-            
-            const result = await window.dataSdk.create(dataSDKRecord);
-            if (result.isOk) {
-              console.log(`✅ Answer synced to Data SDK: ${record.nim}`);
-            }
-          }
-        }
-      } catch (err) {
-        console.error('⚠️ Error syncing to Data SDK:', err);
-      }
-      
-      await new Promise(resolve => setTimeout(resolve, 800));
-      document.getElementById('quizScreen').classList.add('hidden');
-      document.getElementById('resultScreen').classList.remove('hidden');
-      
-      document.getElementById('resultEmoji').textContent = '✅';
-      
-      let resultMessage = `Ujian Anda telah selesai!\n\n${answeredCount} jawaban telah disimpan`;
-      
-      if (syncStatus === 'success' || (appsScriptUrl && savedToSheet)) {
-        resultMessage += ` ke Google Sheet JAWABAN Admin. ✅`;
-        resultMessage += `\n\n✅ Data Anda sudah tersimpan dan tersinkronisasi ke Google Sheet milik admin.`;
-      } else if (syncStatus === 'no_url') {
-        resultMessage += ` dan tersinkronisasi otomatis ke cloud.`;
-        resultMessage += `\n\n💡 Tip: Admin dapat mengatur Apps Script URL untuk menyimpan langsung ke Google Sheet.`;
-      } else {
-        resultMessage += ` dan tersinkronisasi ke server.`;
-      }
-      
-      resultMessage += `\n\nTerimakasih telah mengerjakan ujian ini.`;
-      
-      document.getElementById('resultMessage').textContent = resultMessage;
-      
-      console.log('\n✅ SUBMISSION COMPLETE');
-      console.log('📊 Summary:');
-      console.log(`  - Student: ${studentData.nim} (${studentData.email})`);
-      console.log(`  - Course: ${studentData.course_name}`);
-      console.log(`  - Total Answers: ${answeredCount}`);
-      console.log(`  - Sync Status: ${syncStatus} (Apps Script: ${appsScriptUrl ? 'YES' : 'NO'})`);
-      console.log(`  - Submitted at: ${new Date().toLocaleString('id-ID')}`);
-    }
+  try {
+    const backupKey = `SUBMISSION_${studentData.nim}_${Date.now()}`;
+    localStorage.setItem(backupKey, JSON.stringify(records));
+    console.log("💾 Backup tersimpan:", backupKey);
+  } catch (e) {
+    console.warn("⚠️ Backup gagal:", e);
+  }
 
-    
+  // =========================
+  // 🔹 TAMPILKAN HASIL
+  // =========================
+  document.getElementById('quizScreen').classList.add('hidden');
+  document.getElementById('resultScreen').classList.remove('hidden');
+
+  document.getElementById('resultEmoji').textContent = '✅';
+
+  document.getElementById('resultMessage').textContent =
+    `Ujian selesai!\n\n${answeredCount} jawaban berhasil disimpan ke Google Sheet.\n\nTerimakasih.`;
+
+  console.log('🎉 SUBMIT SELESAI');
+}
 
     function backToRegistration() {
       document.getElementById('startScreen').classList.add('hidden');
@@ -4425,31 +4331,23 @@ function ContentServiceResult(message, success, data) {
     }
 
     async function syncViaAppsScript(appsScriptUrl) {
-  try {
-    const response = await fetch(appsScriptUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'getQuestions',
-        sheetName: 'SOAL'
-      })
-    });
+      try {
+        const response = await fetch(appsScriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'getQuestions', sheetName: 'SOAL' })
+        });
 
-    const result = await response.json();
+        console.log('✅ Apps Script request sent');
+        // mode: 'no-cors' tidak bisa membaca response, jadi fallback ke CSV
+        return await syncViaGoogleSheetCSV(localStorage.getItem('QUESTIONS_GOOGLE_SHEET_ID') || '');
+      } catch (err) {
+        console.error('⚠️ Apps Script sync error:', err);
+        return false;
+      }
+    }
 
-    console.log('✅ Soal berhasil diambil dari Apps Script');
-    console.log(result);
-
-    return result;
-
-  } catch (err) {
-    console.error('⚠️ Apps Script gagal, fallback ke CSV:', err);
-
-    return await syncViaGoogleSheetCSV(
-      localStorage.getItem('QUESTIONS_GOOGLE_SHEET_ID') || ''
-    );
-  }
-}
     async function syncViaGoogleSheetCSV(questionSheetId) {
       try {
         if (!questionSheetId) {
